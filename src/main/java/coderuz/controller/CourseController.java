@@ -58,7 +58,7 @@ public class CourseController {
     }
 
     @GetMapping("/getByDuration")
-    private ResponseEntity<List<CourseDTO>> findbyDuration(@RequestParam("duration") Double duration){
+    private ResponseEntity<List<CourseDTO>> findbyDuration(@RequestParam("duration") Integer duration){
         List<CourseDTO> result = courseService.getByDuration(duration);
         return ResponseEntity.ok().body(result);
     }

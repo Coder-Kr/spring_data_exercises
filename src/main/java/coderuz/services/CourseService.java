@@ -110,7 +110,7 @@ public class CourseService {
         return list;
     }
 
-    public List<CourseDTO> getByDuration(Double duration) {
+    public List<CourseDTO> getByDuration(Integer duration) {
         Iterable<CourseEntity> iterable = courseRepository.findByDuration(duration);
         if(!iterable.iterator().hasNext()) {
             throw new IllegalArgumentException("Course not found");
