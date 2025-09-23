@@ -1,0 +1,131 @@
+    ***** Spring Data Exercise by codeyz (dasturlash.uz) *****
+
+O'quv markazi uchun O'quvchi, Fanlar va o'quvchining qatnashgan fanlarini
+manitor qiladigan loyihaning API larini yozing.
+
+Tables:
+Student: id,name,surname,level,age,gender,createdDate
+Course: id,name,price,duration,createdDate
+StudentCourseMark:  id,studentId,courseId,mark,createdDate
+
+StudentCourseMark - degani bitta student bitta tandan olgan baxoladi. 
+	Ya'ni bitta student falon chisloda imtihon topshirgan edi, unga xabo qo'yishdi.
+        Yana boynagi student 2 xaftadan keyin yana o'sha fandan imtihon topshirib yana baxo olddi, va hokozo.
+ 	 Bitta talaba bitta fandan fitfilio'n marta imtihon topshirishi umkun.	
+
+**************** exercise 1 ********************
+Student
+	id,name,surname,level,age,gender,createdDate
+	1. Create student
+	    name,surname,level,age,Gender
+	2. Get Student List. return all.
+	3. Get student by id.
+	4. Update student.
+	5. Delete Student by id.
+	6. Get method by each field. (getByName, getBySurname, getByLevel, getByAge, getByGender)
+	7. Get StudentList by Given Date. // 2024-01-01
+	8. Get StudentList  between given dates. //  2024-01-20   2024-02-02
+	9. Student Pagination;
+	10. Student Pagination by given Level. List should be sorted by id.
+	11. Pagination by given gender.  List should be sorted by createdDate.
+	12. Filter with pagination. Filter items (id,name,surname,level,age,Gender, createdDateFrom,createdDateTo)
+
+Course
+	id,name,price,duration,createdDate
+	1. Create Course
+	    (name,price,duration)
+	2. Get Course by id.
+	3. Get Course list. return all.
+	4. Update Course.
+	5. Delete Course
+	6. Get method by each field. (getByName, getByPrice,getByDuration)
+	7. Get Course list between given 2 prices.
+	8. Get Course list between 2 createdDates
+	9. Course Pagination.
+	10. Course Pagination. List should be sorted by createdDate.
+	11. Course Pagination by price. List should be sorted by createdDate.
+	12. Course Pagination by price between. List should be sorted by createdDate.
+    13. Filter with pagination. Filter items (id,name,price,duration,createdDateFrom,createdDateTo)
+
+StudentCourse
+	id,studentId,courseId,mark,createdDate,
+	1. Create StudentCourse
+	    (studentId,courseId,mark)
+	2. Update StudentCourse
+	3. Get StudentCourse by id.
+	    response (id,studentId,courseId,mark,createdDate,)
+	4. Get StudentCourse by id with detail.
+    	    response {  id,
+    	                student(id,name,surname),
+    	                course(id,name),
+    	                mark,
+    	                createdDate
+    	              }
+    5. Delete StudentCourse by id.
+    6. Get List of StudentCourse. Return All
+	7. Studentni berilgan kundagi olgan baxosi.
+	    studentId = 1,
+	    givenDate = 2024-07-22
+	8. Studentni berilgan 2kun oralig'idagi olgan baxosi.
+	    studentId = 1,
+    	dataFrom = 2024-07-22
+    	dataTo = 2024-07-28
+	9.  Studentni olgan barcha baxolari vaqt boyicha kamayish tartibida sord qiling.
+	    studentId = 1
+	10. Studentni berilgan curse dan olgan baxolari vaqt boyicha kamayish tartibida sord qiling.
+	    studentId = 1
+	    courseId = 4
+	11. Studentni eng oxirda olgan baxosi, va curse nomi.
+	    studentId = 1
+	12. Studentni olgan eng katta 3ta baxosi.
+	    studentId = 1
+	13. Studentni eng birinchi olgan baxosi.
+	    studentId = 1
+	14. Studenti  berilgan course dan olgan birinchi baxosi.
+	    studentId = 1
+	    courseId = 4
+	15. Studentni berilgan cuorse-dan olgan eng baland baxosi.
+	    studentId = 1,
+	    courseId = 1
+	16. Studentni o'rtacha olgan baxolari.   sum/count
+	    studentId = 1
+	17. Studentni berilgan curse dan olgan o'rtacha baxolari.  sum/count
+	    studentId = 1
+	    courseId = 1
+	18. Studentni berilgan baxodan katta bo'lgan baxolari soni.
+	    studentId = 1,
+	    mark = 3
+	19. Berilgan Cursdan eng baland baxo.
+	20. Berilgan Cursdan o'lingan o'rtacha baxo.   sum/count
+	    courseId = 1
+	21. Berilgan Course-dan olingan baxolar soni.
+	22. StudentCourseMark pagination.
+	23. StudentCourseMark pagination by given studentId. List should be sorted by createdDate.
+	24. StudentCourseMark pagination by given courseId.  List should be sorted by createdDate.
+
+    -- quyidagi api larni join lar bilan ishlang.
+    25. Berilgan studentId-si orqali u olgan baxolari ro'yhatini return qiling.
+        Service quyidagi ma'lumotlar return qilinishi kerak.
+        studentCourse{id,mark,createdDate,
+                    course{id,name,title}
+        }
+    26. Berilgan Cours-ning id-si orqali undan olingna baxolarni return qiling.
+        Service quyidagi ma'lumotlar return qilinishi kerak.
+        studentCourse{id,mark,createdDate,
+                            student{id,name,surname}
+                }
+	27. Xar bir olingan baxo, kurs ma'lumot, student ma'lumotini retunr qiladigna method yozing.
+	    Service quyidagi ma'lumotlar return qilinishi kerak.
+	    studentCourse{
+	        id,mark,createdDate,
+	        student{id,name,surname},
+	        course{id,title}
+	        }
+	-- filter.
+    28. Filter with pagination. Filter items (studentId,courseId,markFrom, markTo,createdDateFrom,createdDateTo,
+            studentName, courseName)
+            studentCourse{
+                id,mark,createdDate,
+                student{id,name,surname},
+                course{id,name}
+            }
