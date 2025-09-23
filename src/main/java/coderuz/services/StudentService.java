@@ -164,6 +164,22 @@ public class StudentService {
         return list;
     }
 
+    public List<StudentDTO> findAllByCreatedAtDate(LocalDate date) {
+        LocalDateTime startDate = LocalDateTime.of(date, LocalTime.MIN);
+        LocalDateTime endDate = LocalDateTime.of(date, LocalTime.MAX);
+
+        Iterable<StudentEntity> iterable = studentRepository.findByCreatedAtBetween(startDate, endDate);
+        List<StudentDTO> list = new LinkedList<>();
+        if(!iterable.iterator().hasNext()){
+            throw new IllegalArgumentException("Student with this " + date + "date not found");
+        }
+
+        for(StudentEntity entity:  iterable){
+            list.add(toDTO(entity));
+        }
+
+        return list;
+    }
     public List<StudentDTO> findAllByCreatedAtBetween(LocalDate start, LocalDate end) {
         LocalDateTime startDate = LocalDateTime.of(start, LocalTime.MIN);
         LocalDateTime endDate = LocalDateTime.of(end, LocalTime.MAX);

@@ -5,7 +5,7 @@ manitor qiladigan loyihaning API larini yozing.
 
 Tables:
 Student: id,name,surname,level,age,gender,createdDate
-Course: id,name,price,duration,createdDate
+Course: id,name,price,duration,createdDate  //price-Double, duration-Integer
 StudentCourseMark:  id,studentId,courseId,mark,createdDate
 
 StudentCourseMark - degani bitta student bitta tandan olgan baxoladi. 

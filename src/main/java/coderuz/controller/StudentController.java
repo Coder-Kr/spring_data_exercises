@@ -83,6 +83,12 @@ public class StudentController {
     }
 
     @GetMapping("/findByDate")
+    private ResponseEntity<List<StudentDTO>> findAllByCreatedAtDate(@RequestParam("date") LocalDate date) {
+        List<StudentDTO> result = studentService.findAllByCreatedAtDate(date);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping("/findByDateBetween")
     private ResponseEntity<List<StudentDTO>> findAllByCreatedAtBetween(@RequestParam("start") LocalDate start, @RequestParam("end") LocalDate end) {
         List<StudentDTO> result = studentService.findAllByCreatedAtBetween(start, end);
         return ResponseEntity.ok().body(result);
