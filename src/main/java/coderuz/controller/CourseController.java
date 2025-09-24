@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -60,6 +61,18 @@ public class CourseController {
     @GetMapping("/getByDuration")
     private ResponseEntity<List<CourseDTO>> findbyDuration(@RequestParam("duration") Integer duration){
         List<CourseDTO> result = courseService.getByDuration(duration);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping("/getByPrices")
+    private ResponseEntity<List<CourseDTO>> findbyPriceBetween(@RequestParam("price1") Double price1, @RequestParam("price2") Double price2){
+        List<CourseDTO> result = courseService.getByPriceBetween(price1, price2);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping("/getByDates")
+    private ResponseEntity<List<CourseDTO>> findByCreatedAtDates(@RequestParam("fromDate") LocalDate createdAt1, @RequestParam("toDate") LocalDate createdAt2){
+        List<CourseDTO> result = courseService.getByCreatedAtDates(createdAt1, createdAt2);
         return ResponseEntity.ok().body(result);
     }
 }

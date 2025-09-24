@@ -7,6 +7,9 @@ import coderuz.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -114,6 +117,32 @@ public class CourseService {
         Iterable<CourseEntity> iterable = courseRepository.findByDuration(duration);
         if(!iterable.iterator().hasNext()) {
             throw new IllegalArgumentException("Course not found");
+        }
+        List<CourseDTO> list = new LinkedList<>();
+        for(CourseEntity entity : iterable){
+            list.add(toDTO(entity));
+        }
+        return list;
+    }
+
+    public List<CourseDTO> getByPriceBetween(Double price1, Double price2) {
+        Iterable<CourseEntity> iterable = courseRepository.findByPriceBetween(price1, price2);
+        if(!iterable.iterator().hasNext()) {
+            throw new IllegalArgumentException("Course not found between these prices");
+        }
+        List<CourseDTO> list = new LinkedList<>();
+        for(CourseEntity entity : iterable){
+            list.add(toDTO(entity));
+        }
+        return list;
+    }
+
+    public List<CourseDTO> getByCreatedAtDates(LocalDate createdAt1, LocalDate createdAt2) {
+        LocalDateTime fromDate = LocalDateTime.of(createdAt1, LocalTime.MIN);
+        LocalDateTime toDate = LocalDateTime.of(createdAt2, LocalTime.MAX);
+        Iterable<CourseEntity> iterable = courseRepository.findByCreatedAtBetween(fromDate, toDate);
+        if(!iterable.iterator().hasNext()) {
+            throw new IllegalArgumentException("Course not found between these created ats");
         }
         List<CourseDTO> list = new LinkedList<>();
         for(CourseEntity entity : iterable){
