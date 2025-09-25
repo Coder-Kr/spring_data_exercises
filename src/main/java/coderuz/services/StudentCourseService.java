@@ -50,11 +50,11 @@ public class StudentCourseService {
 
     public List<StudentCourseDTO> findAll() {
         Iterable<StudentCourseEntity> iterable = studetnCourseRepository.findAll();
-        if(!iterable.iterator().hasNext()) {
+        if (!iterable.iterator().hasNext()) {
             throw new IllegalArgumentException("Student course not found");
         }
         List<StudentCourseDTO> list = new LinkedList<>();
-        for(StudentCourseEntity entity : iterable) {
+        for (StudentCourseEntity entity : iterable) {
             list.add(toDTO(entity));
         }
         return list;
@@ -62,8 +62,8 @@ public class StudentCourseService {
 
     public StudentCourseDTO getById(Integer id) {
         Optional<StudentCourseEntity> optional = studetnCourseRepository.findById(id);
-        if(optional.isEmpty()) {
-            throw new IllegalArgumentException("Student course not found");
+        if (optional.isEmpty()) {
+            throw new IllegalArgumentException("Student course not found test");
         }
         return toDTO(optional.get());
     }
@@ -108,14 +108,14 @@ public class StudentCourseService {
         return "Student course deleted";
     }
 
-    public StudentCourseDTO getByIdDetail(Integer id){
+    public StudentCourseDTO getByIdDetail(Integer id) {
         Optional<StudentCourseEntity> optional = studetnCourseRepository.findById(id);
         if (optional.isEmpty()) {
             throw new IllegalArgumentException("Student course not found");
         }
         StudentCourseEntity entity = optional.get();
 
-        StudentDTO student =  studentService.getById(entity.getStudentId());
+        StudentDTO student = studentService.getById(entity.getStudentId());
         CourseDTO course = courseService.getById(entity.getCourseId());
 
         StudentCourseDTO studentCourseDTO = new StudentCourseDTO();
@@ -133,9 +133,9 @@ public class StudentCourseService {
         LocalDateTime startDate = LocalDateTime.of(date, LocalTime.MIN);
         LocalDateTime endDate = LocalDateTime.of(date, LocalTime.MAX);
 
-        List<StudentCourseEntity> result =  studetnCourseRepository.findByStudentIdAndCreatedAtBetween(studentId, startDate, endDate);
+        List<StudentCourseEntity> result = studetnCourseRepository.findByStudentIdAndCreatedAtBetween(studentId, startDate, endDate);
         List<StudentCourseDTO> list = new LinkedList<>();
-        for(StudentCourseEntity entity : result) {
+        for (StudentCourseEntity entity : result) {
             list.add(toDTO(entity));
         }
 
@@ -146,12 +146,12 @@ public class StudentCourseService {
         LocalDateTime startDate = LocalDateTime.of(fromDate, LocalTime.MIN);
         LocalDateTime endDate = LocalDateTime.of(toDate, LocalTime.MAX);
 
-        List<StudentCourseEntity> result =  studetnCourseRepository.findByStudentIdAndCreatedAtBetween(studentId, startDate, endDate);
-        if(result.isEmpty()) {
+        List<StudentCourseEntity> result = studetnCourseRepository.findByStudentIdAndCreatedAtBetween(studentId, startDate, endDate);
+        if (result.isEmpty()) {
             throw new IllegalArgumentException("Student course not found!");
         }
         List<StudentCourseDTO> list = new LinkedList<>();
-        for(StudentCourseEntity entity : result) {
+        for (StudentCourseEntity entity : result) {
             list.add(toDTO(entity));
         }
 
@@ -159,14 +159,65 @@ public class StudentCourseService {
     }
 
     public List<StudentCourseDTO> findByStudentIdOrderByCreatedAtDesc(Integer studentId) {
-        List<StudentCourseEntity> result =  studetnCourseRepository.findByStudentIdOrderByCreatedAtDesc(studentId);
-        if(result.isEmpty()) {
+        List<StudentCourseEntity> result = studetnCourseRepository.findByStudentIdOrderByCreatedAtDesc(studentId);
+        if (result.isEmpty()) {
             throw new IllegalArgumentException("Student course not found");
         }
         List<StudentCourseDTO> list = new LinkedList<>();
-        for(StudentCourseEntity entity : result) {
+        for (StudentCourseEntity entity : result) {
             list.add(toDTO(entity));
         }
         return list;
+    }
+
+    public List<StudentCourseDTO> findByStudentIdAndCourseIdOrderByCreatedAtDesc(Integer studentId, Integer courseId) {
+        List<StudentCourseEntity> result =  studetnCourseRepository.findByStudentIdAndCourseIdOrderByCreatedAtDesc(studentId, courseId);
+        List<StudentCourseDTO> list = new LinkedList<>();
+        for(StudentCourseEntity entity: result){
+            list.add(toDTO(entity));
+        }
+        return list;
+    }
+
+    public StudentCourseDTO findTopByStudentIdOrderByCreatedAtDesc(Integer studentId) {
+        Optional<StudentCourseEntity> result = studetnCourseRepository.findTopByStudentIdOrderByCreatedAtDesc(studentId);
+
+        if (result.isEmpty()) {
+            throw new IllegalArgumentException("Student course not found");
+        }
+        StudentCourseEntity entity = result.get();
+        return toDTO(entity);
+    }
+
+    public List<StudentCourseDTO> findThreeTopByStudentIdOrderByCreatedAtDesc(Integer studentId) {
+        List<StudentCourseEntity> result = studetnCourseRepository.findTop3ByStudentIdOrderByCreatedAtDesc(studentId);
+        if (result.isEmpty()) {
+            throw new IllegalArgumentException("Student course not found");
+        }
+        List<StudentCourseDTO> list = new LinkedList<>();
+        for (StudentCourseEntity entity : result) {
+            list.add(toDTO(entity));
+        }
+        return list;
+    }
+
+    public StudentCourseDTO findAvgMarkByStudentId(Integer studentId) {
+        List<StudentCourseEntity> result = studetnCourseRepository.findByStudentId(studentId);
+        System.out.println(">>>>>" + result);
+        StudentCourseEntity student = studetnCourseRepository.findTopByStudentId(studentId);
+        StudentCourseDTO studentCourseDTO = toDTO(student);
+        if (result.isEmpty()) {
+            throw new IllegalArgumentException("Student course not found");
+        }
+        int count = 0;
+        int sum = 0;
+        for (StudentCourseEntity entity : result) {
+            sum += entity.getMark();
+            count++;
+        }
+        Integer avgMark = sum / count;
+        studentCourseDTO.setMark(avgMark);
+        return studentCourseDTO;
+
     }
 }

@@ -13,4 +13,24 @@ public interface StudetnCourseRepository extends CrudRepository<StudentCourseEnt
     List<StudentCourseEntity> findByStudentIdAndCreatedAtBetween(Integer studentId, LocalDateTime fromDate, LocalDateTime toDate);
 
     List<StudentCourseEntity> findByStudentIdOrderByCreatedAtDesc(Integer studentId);
+
+    List<StudentCourseEntity> findByStudentIdAndCourseIdOrderByCreatedAtDesc(Integer studentId, Integer courseId);
+
+    Optional<StudentCourseEntity> findTopByStudentIdOrderByCreatedAtDesc(Integer studentId);
+
+    List<StudentCourseEntity> findTop3ByStudentIdOrderByCreatedAtDesc(Integer studentId);
+
+    Optional<StudentCourseEntity> findTopByStudentIdOrderByCreatedAtAsc(Integer studentId);
+
+    Optional<StudentCourseEntity> findByStudentIdAndCourseIdOrderByCreatedAtAsc(Integer studentId, Integer courseId);
+
+    Optional<StudentCourseEntity> findTopByStudentIdAndCourseIdOrderByMarkDesc(Integer studentId, Integer courseId);
+
+    List<StudentCourseEntity> findByStudentId(Integer studentId);
+
+    StudentCourseEntity findTopByStudentId(Integer studentId);
+
+
+
+
 }

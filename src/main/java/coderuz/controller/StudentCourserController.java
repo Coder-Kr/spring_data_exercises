@@ -75,4 +75,30 @@ public class StudentCourserController {
         return ResponseEntity.ok().body(result);
     }
 
+    @GetMapping("/getStudentMarksOnCourse")
+    private ResponseEntity<List<StudentCourseDTO>> findByStudentIdAndCourseIdOrderByCreatedAtDesc(
+            @RequestParam("studentId") Integer studentId,
+            @RequestParam("courseId") Integer courseId){
+            List<StudentCourseDTO> result =  studentCourseService.findByStudentIdAndCourseIdOrderByCreatedAtDesc(studentId, courseId);
+            return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping("/getByStudentIdTop/{id}")
+    private ResponseEntity<StudentCourseDTO> findTopByStudentIdOrderByCreatedAtDesc(@PathVariable("id")  Integer studentId) {
+        StudentCourseDTO result = studentCourseService.findTopByStudentIdOrderByCreatedAtDesc(studentId);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping("/getbyStudentIdTop3/{id}")
+    private ResponseEntity<List<StudentCourseDTO>> findTop3ByStudentIdOrderByCreatedAtDesc(@PathVariable("id") Integer studentId) {
+        List<StudentCourseDTO> result = studentCourseService.findThreeTopByStudentIdOrderByCreatedAtDesc(studentId);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping("/getByStudentIdAvgMark/{id}")
+    private ResponseEntity<StudentCourseDTO> findAvgMarkByStudentId(@PathVariable Integer id) {
+        StudentCourseDTO result = studentCourseService.findAvgMarkByStudentId(id);
+        return ResponseEntity.ok().body(result);
+    }
+
 }
