@@ -101,4 +101,10 @@ public class StudentCourserController {
         return ResponseEntity.ok().body(result);
     }
 
+    @GetMapping("/getMaxMarkOnCourse/{id}")
+    private ResponseEntity<StudentCourseDTO> findMaxMarkOnCourse(@PathVariable("id") Integer id) {
+        StudentCourseDTO result = studentCourseService.findFirstByCourseIdOrderByMarkDesc(id);
+        return ResponseEntity.ok().body(result);
+    }
+
 }

@@ -220,4 +220,16 @@ public class StudentCourseService {
         return studentCourseDTO;
 
     }
+
+    public StudentCourseDTO findFirstByCourseIdOrderByMarkDesc(Integer courseId) {
+        Optional<StudentCourseEntity> optional = studetnCourseRepository.findFirstByCourseIdOrderByMarkDesc(courseId);
+        if (optional.isEmpty()) {
+            throw new IllegalArgumentException("Student course not found");
+        }
+        StudentCourseEntity entity = optional.get();
+        return toDTO(entity);
+
+    }
+
+
 }
