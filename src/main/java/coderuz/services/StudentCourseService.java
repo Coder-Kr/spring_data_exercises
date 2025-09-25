@@ -1,7 +1,10 @@
 package coderuz.services;
 
+import coderuz.dto.CourseDTO;
 import coderuz.dto.StudentCourseDTO;
+import coderuz.dto.StudentDTO;
 import coderuz.entity.StudentCourseEntity;
+import coderuz.entity.StudentEntity;
 import coderuz.repository.StudetnCourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,12 @@ public class StudentCourseService {
 
     @Autowired
     private StudetnCourseRepository studetnCourseRepository;
+
+    @Autowired
+    private StudentService studentService;
+
+    @Autowired
+    private CourseService courseService;
 
     public StudentCourseDTO create(StudentCourseDTO studentCourseDTO) {
         StudentCourseEntity entity = new StudentCourseEntity();
@@ -96,5 +105,24 @@ public class StudentCourseService {
         return "Student course deleted";
     }
 
+    public StudentCourseDTO getByIdDetail(Integer id){
+        Optional<StudentCourseEntity> optional = studetnCourseRepository.findById(id);
+        if (optional.isEmpty()) {
+            throw new IllegalArgumentException("Student course not found");
+        }
+        StudentCourseEntity entity = optional.get();
 
+        StudentDTO student =  studentService.getById(entity.getStudentId());
+        CourseDTO course = courseService.getById(entity.getCourseId());
+
+        StudentCourseDTO studentCourseDTO = new StudentCourseDTO();
+
+        studentCourseDTO.setId(entity.getId());
+        studentCourseDTO.setMark(entity.getMark());
+        studentCourseDTO.setCreatedAt(entity.getCreatedAt());
+        studentCourseDTO.setStudent(student);
+        studentCourseDTO.setCourse(course);
+
+        return studentCourseDTO;
+    }
 }

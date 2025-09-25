@@ -1,5 +1,7 @@
 package coderuz.dto;
 
+import coderuz.entity.CourseEntity;
+import coderuz.entity.StudentEntity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -25,4 +27,7 @@ public class StudentCourseDTO {
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    private StudentDTO student;
+    private CourseDTO course;
 }

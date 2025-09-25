@@ -44,4 +44,10 @@ public class StudentCourserController {
         String result = studentCourseService.delete(id);
         return ResponseEntity.ok().body(result);
     }
+
+    @GetMapping("/getByIdDetail/{id}")
+    private ResponseEntity<StudentCourseDTO> getByIdDetail(@PathVariable("id") Integer id){
+        StudentCourseDTO result = studentCourseService.getByIdDetail(id);
+        return ResponseEntity.ok().body(result);
+    }
 }
