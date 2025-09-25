@@ -9,6 +9,9 @@ import coderuz.repository.StudetnCourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -124,5 +127,46 @@ public class StudentCourseService {
         studentCourseDTO.setCourse(course);
 
         return studentCourseDTO;
+    }
+
+    public List<StudentCourseDTO> getByStudentIdAndCreatedAtBetween(Integer studentId, LocalDate date) {
+        LocalDateTime startDate = LocalDateTime.of(date, LocalTime.MIN);
+        LocalDateTime endDate = LocalDateTime.of(date, LocalTime.MAX);
+
+        List<StudentCourseEntity> result =  studetnCourseRepository.findByStudentIdAndCreatedAtBetween(studentId, startDate, endDate);
+        List<StudentCourseDTO> list = new LinkedList<>();
+        for(StudentCourseEntity entity : result) {
+            list.add(toDTO(entity));
+        }
+
+        return list;
+    }
+
+    public List<StudentCourseDTO> getByStudentIdAndDatesBetween(Integer studentId, LocalDate fromDate, LocalDate toDate) {
+        LocalDateTime startDate = LocalDateTime.of(fromDate, LocalTime.MIN);
+        LocalDateTime endDate = LocalDateTime.of(toDate, LocalTime.MAX);
+
+        List<StudentCourseEntity> result =  studetnCourseRepository.findByStudentIdAndCreatedAtBetween(studentId, startDate, endDate);
+        if(result.isEmpty()) {
+            throw new IllegalArgumentException("Student course not found!");
+        }
+        List<StudentCourseDTO> list = new LinkedList<>();
+        for(StudentCourseEntity entity : result) {
+            list.add(toDTO(entity));
+        }
+
+        return list;
+    }
+
+    public List<StudentCourseDTO> findByStudentIdOrderByCreatedAtDesc(Integer studentId) {
+        List<StudentCourseEntity> result =  studetnCourseRepository.findByStudentIdOrderByCreatedAtDesc(studentId);
+        if(result.isEmpty()) {
+            throw new IllegalArgumentException("Student course not found");
+        }
+        List<StudentCourseDTO> list = new LinkedList<>();
+        for(StudentCourseEntity entity : result) {
+            list.add(toDTO(entity));
+        }
+        return list;
     }
 }
