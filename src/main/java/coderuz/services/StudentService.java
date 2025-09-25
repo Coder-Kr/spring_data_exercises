@@ -151,7 +151,7 @@ public class StudentService {
     }
 
     public List<StudentDTO> findAllByGender(Gender gender){
-        Iterable<StudentEntity> iterable = studentRepository.findByGender(gender);
+        Iterable<StudentEntity> iterable = studentRepository.findAllByGender(gender);
         List<StudentDTO> list = new LinkedList<>();
         if(!iterable.iterator().hasNext()){
             throw new IllegalArgumentException("Student with gender " + gender + " not found");
@@ -180,6 +180,7 @@ public class StudentService {
 
         return list;
     }
+
     public List<StudentDTO> findAllByCreatedAtBetween(LocalDate start, LocalDate end) {
         LocalDateTime startDate = LocalDateTime.of(start, LocalTime.MIN);
         LocalDateTime endDate = LocalDateTime.of(end, LocalTime.MAX);
