@@ -13,10 +13,15 @@ import java.util.List;
 public interface StudentRepository extends CrudRepository<StudentEntity, Integer> {
 
     List<StudentEntity> findByName(String name);
+
     List<StudentEntity> findBySurname(String name);
+
     List<StudentEntity> findByLevel(Integer level);
+
     List<StudentEntity> findByAge(Integer age);
+
     List<StudentEntity> findByGender(Gender gender);
+
     List<StudentEntity> findByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
 
     //=======@Query========//
@@ -37,7 +42,17 @@ public interface StudentRepository extends CrudRepository<StudentEntity, Integer
     List<StudentEntity> findAllByAge(@Param("ageParam") Integer age);
 
     @Query("from StudentEntity where gender=:genderParam")
-    List<StudentEntity> findAllByGender(@Param("genderParam")  Gender gender);
+    List<StudentEntity> findAllByGender(@Param("genderParam") Gender gender);
 
+    @Query("from StudentEntity where name=:nameParam and surname=:surnameParam and age=:ageParam")
+    List<StudentEntity> findAllByDetail(
+            @Param("nameParam") String name,
+            @Param("surnameParam") String surname,
+            @Param("ageParam") Integer age);
 
+    @Query("from StudentEntity where name=?1 and surname=?2 and age=?3")
+    List<StudentEntity> findByAllByDetailPositional(String name, String surname, Integer age);
+
+    @Query(value = "select * from student where name=:name and surname=:surname and age=:age", nativeQuery = true)
+    List<StudentEntity> findByAllByDetailPositionalNative(@Param("name") String name, @Param("surname") String surname, @Param("age") Integer age);
 }

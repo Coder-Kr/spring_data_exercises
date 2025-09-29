@@ -93,4 +93,10 @@ public class StudentController {
         List<StudentDTO> result = studentService.findAllByCreatedAtBetween(start, end);
         return ResponseEntity.ok().body(result);
     }
+
+    @GetMapping("/getByDetail")
+    private ResponseEntity<List<StudentDTO>> findAllByDetail(@RequestBody StudentDTO studentDTO) {
+        List<StudentDTO> result = studentService.findByAllByDetailPositionalNative(studentDTO);
+        return ResponseEntity.ok().body(result);
+    }
 }

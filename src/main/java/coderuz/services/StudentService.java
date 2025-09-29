@@ -197,4 +197,16 @@ public class StudentService {
 
         return list;
     }
+
+    public List<StudentDTO> findByAllByDetailPositionalNative(StudentDTO studentDTO) {
+        List<StudentEntity> list = studentRepository.findByAllByDetailPositionalNative(studentDTO.getName(), studentDTO.getSurname(), studentDTO.getAge());
+        if(list.isEmpty()){
+            throw new IllegalArgumentException("Student with name " + studentDTO.getName() + " and surname " + studentDTO.getSurname() + " not found");
+        }
+        List<StudentDTO> listDTO = new LinkedList<>();
+        for(StudentEntity entity:  list){
+            listDTO.add(toDTO(entity));
+        }
+        return listDTO;
+    }
 }

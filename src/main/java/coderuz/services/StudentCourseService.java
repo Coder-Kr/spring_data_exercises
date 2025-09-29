@@ -203,12 +203,14 @@ public class StudentCourseService {
 
     public StudentCourseDTO findAvgMarkByStudentId(Integer studentId) {
         List<StudentCourseEntity> result = studetnCourseRepository.findByStudentId(studentId);
-        System.out.println(">>>>>" + result);
-        StudentCourseEntity student = studetnCourseRepository.findTopByStudentId(studentId);
-        StudentCourseDTO studentCourseDTO = toDTO(student);
         if (result.isEmpty()) {
             throw new IllegalArgumentException("Student course not found");
         }
+        StudentCourseEntity student = studetnCourseRepository.findTopByStudentId(studentId);
+        if (student == null) {
+            throw new IllegalArgumentException("Student not found");
+        }
+        StudentCourseDTO studentCourseDTO = toDTO(student);
         int count = 0;
         int sum = 0;
         for (StudentCourseEntity entity : result) {
@@ -230,6 +232,7 @@ public class StudentCourseService {
         return toDTO(entity);
 
     }
+
 
 
 }
