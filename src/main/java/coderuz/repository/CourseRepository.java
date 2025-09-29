@@ -1,7 +1,11 @@
 package coderuz.repository;
 
 import coderuz.entity.CourseEntity;
+import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,5 +21,32 @@ public interface CourseRepository extends CrudRepository<CourseEntity, Integer> 
     List<CourseEntity> findByPriceBetween(Double price1, Double price2);
 
     List<CourseEntity> findByCreatedAtBetween(LocalDateTime createdAt1, LocalDateTime createdAt2);
+
+    @Query("from CourseEntity where id=:id")
+    CourseEntity findById(@Param("id") int id);
+
+    @Query("from CourseEntity ")
+    List<CourseEntity> findAllQ();
+
+    @Modifying
+    @Transactional
+    @Query("update CourseEntity set name=:name, duration=:duration where id=:id")
+    void updateByIdQ(@Param("name") String name, @Param("duration") Integer duration);
+
+    @Modifying
+    @Transactional
+    @Query("delete CourseEntity where id=:id")
+    void deleteByIdQ(@Param("id") int id);
+
+    @Query("from CourseEntity where name=:name")
+    List<CourseEntity> findByNameQ(String name);
+
+    @Query("from CourseEntity where price between :fromPrice and :toPrice")
+    List<CourseEntity> findByPriceQ(@Param("fromPrice") Double fromPrice, @Param("toPrice") Double toPrice);
+
+    @Query("from CourseEntity where createdAt between :fromDate and :toDate")
+    List<CourseEntity> findByDates(@Param("fromDate") String fromDate, @Param("toDate") String toDate);
+
+
 
 }

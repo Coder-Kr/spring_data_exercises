@@ -53,7 +53,7 @@ StudentCourse
 	    (studentId,courseId,mark)
 	2. Update StudentCourse
 	3. Get StudentCourse by id.
-	    response (id,studentId,courseId,mark,createdDate,)
+	    response (id,studentId,courseId,mark,createdDate)
 	4. Get StudentCourse by id with detail.
     	    response {  id,
     	                student(id,name,surname),
