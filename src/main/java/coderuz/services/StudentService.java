@@ -85,6 +85,12 @@ public class StudentService {
 
         return toDTO(entity);
 
+//        int result = studentRepository.updateNameAndSurname(studentDTO.getName(), studentDTO.getSurname(), id);
+//        if(result == 0){
+//            throw new IllegalArgumentException("Student with id " + id + " not found");
+//        }
+//        return result;
+
     }
 
     public String deleteById(Integer id) {
@@ -208,5 +214,9 @@ public class StudentService {
             listDTO.add(toDTO(entity));
         }
         return listDTO;
+    }
+
+    public void deleteByNameAndSurname(StudentDTO studentDTO) {
+        studentRepository.deleteByNameAndSurname(studentDTO.getName(), studentDTO.getSurname());
     }
 }

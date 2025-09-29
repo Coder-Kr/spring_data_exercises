@@ -3,6 +3,8 @@ package coderuz.repository;
 import coderuz.entity.StudentCourseEntity;
 import coderuz.entity.StudentEntity;
 import coderuz.enums.Gender;
+import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -53,6 +55,21 @@ public interface StudentRepository extends CrudRepository<StudentEntity, Integer
     @Query("from StudentEntity where name=?1 and surname=?2 and age=?3")
     List<StudentEntity> findByAllByDetailPositional(String name, String surname, Integer age);
 
-    @Query(value = "select * from student where name=:name and surname=:surname and age=:age", nativeQuery = true)
-    List<StudentEntity> findByAllByDetailPositionalNative(@Param("name") String name, @Param("surname") String surname, @Param("age") Integer age);
+    @Query(value = "select * from student where name=?1 and surname=?2 and age=?3", nativeQuery = true)
+    List<StudentEntity> findByAllByDetailPositionalNative(String name, String surname, Integer age);
+
+//    @Modifying
+//    @Transactional
+//    @Query(value = "update student set name=?1, surname=?2 where id=?3", nativeQuery = true)
+//    int updateNameAndSurname(String name, String surname, Integer id);
+
+    @Modifying
+    @Transactional
+    @Query(value = "update StudentEntity set name=?1, surname=?2 where id=?3")
+    int updateNameAndSurname(String name, String surname, Integer id);
+
+    @Modifying
+    @Transactional
+    @Query("delete from StudentEntity where name=?1 and surname=?2")
+    void deleteByNameAndSurname(String name, String surname);
 }

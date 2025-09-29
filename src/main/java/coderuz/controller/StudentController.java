@@ -99,4 +99,10 @@ public class StudentController {
         List<StudentDTO> result = studentService.findByAllByDetailPositionalNative(studentDTO);
         return ResponseEntity.ok().body(result);
     }
+
+    @PostMapping("/deleteByNameAndSurname")
+    private ResponseEntity<String> deleteByNameAndSurname(@RequestBody StudentDTO studentDTO) {
+        studentService.deleteByNameAndSurname(studentDTO);
+        return ResponseEntity.ok().body("success");
+    }
 }
