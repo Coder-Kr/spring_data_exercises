@@ -33,7 +33,7 @@ public class StudentService {
         Iterable<StudentEntity> iterable = studentRepository.findAll();
         List<StudentDTO> list = new LinkedList<>();
 
-        for(StudentEntity studentEntity: iterable){
+        for (StudentEntity studentEntity : iterable) {
 
             list.add(toDTO(studentEntity));
         }
@@ -63,16 +63,16 @@ public class StudentService {
     }
 
     public StudentDTO getById(Integer id) {
-        Optional<StudentEntity> optional =  studentRepository.findById(id);
-        if(optional.isEmpty()){
+        Optional<StudentEntity> optional = studentRepository.findById(id);
+        if (optional.isEmpty()) {
             throw new IllegalArgumentException("Student with id " + id + " not found");
         }
         return toDTO(optional.get());
     }
 
     public StudentDTO updateById(Integer id, StudentDTO studentDTO) {
-        Optional<StudentEntity> optional =  studentRepository.findById(id);
-        if(optional.isEmpty()){
+        Optional<StudentEntity> optional = studentRepository.findById(id);
+        if (optional.isEmpty()) {
             throw new IllegalArgumentException("Student with id " + id + " not found");
         }
         StudentEntity entity = optional.get();
@@ -81,9 +81,10 @@ public class StudentService {
         entity.setAge(studentDTO.getAge());
         entity.setGender(studentDTO.getGender());
         entity.setLevel(studentDTO.getLevel());
-        studentRepository.save(entity);
+        studentRepository.updateStudentById(studentDTO.getName(), studentDTO.getSurname(), studentDTO.getLevel(), studentDTO.getAge(), studentDTO.getGender(), id);
 
-        return toDTO(entity);
+        studentDTO.setId(id);
+        return studentDTO;
 
 //        int result = studentRepository.updateNameAndSurname(studentDTO.getName(), studentDTO.getSurname(), id);
 //        if(result == 0){
@@ -94,11 +95,11 @@ public class StudentService {
     }
 
     public String deleteById(Integer id) {
-        Optional<StudentEntity> optional =  studentRepository.findById(id);
-        if(optional.isEmpty()){
+        Optional<StudentEntity> optional = studentRepository.findById(id);
+        if (optional.isEmpty()) {
             throw new IllegalArgumentException("Student with id " + id + " not found");
         }
-         studentRepository.deleteById(id);
+        studentRepository.deleteById(id);
         return "Student with id " + id + " has been deleted";
     }
 
@@ -106,11 +107,11 @@ public class StudentService {
         Iterable<StudentEntity> iterable = studentRepository.findByName(name);
         List<StudentDTO> list = new LinkedList<>();
 
-        if(!iterable.iterator().hasNext()){
+        if (!iterable.iterator().hasNext()) {
             throw new IllegalArgumentException("Student with name " + name + " not found");
         }
 
-        for(StudentEntity studentEntity: iterable){
+        for (StudentEntity studentEntity : iterable) {
             list.add(toDTO(studentEntity));
         }
         return list;
@@ -120,50 +121,50 @@ public class StudentService {
         Iterable<StudentEntity> iterable = studentRepository.findBySurname(surname);
         List<StudentDTO> list = new LinkedList<>();
 
-        if(!iterable.iterator().hasNext()){
+        if (!iterable.iterator().hasNext()) {
             throw new IllegalArgumentException("Student with surname " + surname + " not found");
         }
 
-        for(StudentEntity studentEntity: iterable){
+        for (StudentEntity studentEntity : iterable) {
             list.add(toDTO(studentEntity));
         }
         return list;
     }
 
-    public  List<StudentDTO> findAllByLevel(Integer level) {
+    public List<StudentDTO> findAllByLevel(Integer level) {
         Iterable<StudentEntity> iterable = studentRepository.findByLevel(level);
         List<StudentDTO> list = new LinkedList<>();
-        if(!iterable.iterator().hasNext()){
+        if (!iterable.iterator().hasNext()) {
             throw new IllegalArgumentException("Student with level " + level + " not found");
         }
-        for(StudentEntity entity:  iterable){
+        for (StudentEntity entity : iterable) {
             list.add(toDTO(entity));
         }
 
         return list;
     }
 
-    public  List<StudentDTO> findAllByAge(Integer age) {
+    public List<StudentDTO> findAllByAge(Integer age) {
         Iterable<StudentEntity> iterable = studentRepository.findByAge(age);
         List<StudentDTO> list = new LinkedList<>();
-        if(!iterable.iterator().hasNext()){
+        if (!iterable.iterator().hasNext()) {
             throw new IllegalArgumentException("Student with age " + age + " not found");
         }
-        for(StudentEntity entity:  iterable){
+        for (StudentEntity entity : iterable) {
             list.add(toDTO(entity));
         }
 
         return list;
     }
 
-    public List<StudentDTO> findAllByGender(Gender gender){
+    public List<StudentDTO> findAllByGender(Gender gender) {
         Iterable<StudentEntity> iterable = studentRepository.findAllByGender(gender);
         List<StudentDTO> list = new LinkedList<>();
-        if(!iterable.iterator().hasNext()){
+        if (!iterable.iterator().hasNext()) {
             throw new IllegalArgumentException("Student with gender " + gender + " not found");
         }
 
-        for(StudentEntity entity:  iterable){
+        for (StudentEntity entity : iterable) {
             list.add(toDTO(entity));
         }
 
@@ -174,13 +175,13 @@ public class StudentService {
         LocalDateTime startDate = LocalDateTime.of(date, LocalTime.MIN);
         LocalDateTime endDate = LocalDateTime.of(date, LocalTime.MAX);
 
-        Iterable<StudentEntity> iterable = studentRepository.findByCreatedAtBetween(startDate, endDate);
+        List<StudentEntity> iterable = studentRepository.findByDate(startDate, endDate);
         List<StudentDTO> list = new LinkedList<>();
-        if(!iterable.iterator().hasNext()){
+        if (iterable.isEmpty()) {
             throw new IllegalArgumentException("Student with this " + date + "date not found");
         }
 
-        for(StudentEntity entity:  iterable){
+        for (StudentEntity entity : iterable) {
             list.add(toDTO(entity));
         }
 
@@ -193,11 +194,11 @@ public class StudentService {
 
         Iterable<StudentEntity> iterable = studentRepository.findByCreatedAtBetween(startDate, endDate);
         List<StudentDTO> list = new LinkedList<>();
-        if(!iterable.iterator().hasNext()){
+        if (!iterable.iterator().hasNext()) {
             throw new IllegalArgumentException("Student with createdAt between " + start + " and " + end + " not found");
         }
 
-        for(StudentEntity entity:  iterable){
+        for (StudentEntity entity : iterable) {
             list.add(toDTO(entity));
         }
 
@@ -206,11 +207,11 @@ public class StudentService {
 
     public List<StudentDTO> findByAllByDetailPositionalNative(StudentDTO studentDTO) {
         List<StudentEntity> list = studentRepository.findByAllByDetailPositionalNative(studentDTO.getName(), studentDTO.getSurname(), studentDTO.getAge());
-        if(list.isEmpty()){
+        if (list.isEmpty()) {
             throw new IllegalArgumentException("Student with name " + studentDTO.getName() + " and surname " + studentDTO.getSurname() + " not found");
         }
         List<StudentDTO> listDTO = new LinkedList<>();
-        for(StudentEntity entity:  list){
+        for (StudentEntity entity : list) {
             listDTO.add(toDTO(entity));
         }
         return listDTO;

@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface StudentRepository extends CrudRepository<StudentEntity, Integer> {
 
@@ -47,10 +48,7 @@ public interface StudentRepository extends CrudRepository<StudentEntity, Integer
     List<StudentEntity> findAllByGender(@Param("genderParam") Gender gender);
 
     @Query("from StudentEntity where name=:nameParam and surname=:surnameParam and age=:ageParam")
-    List<StudentEntity> findAllByDetail(
-            @Param("nameParam") String name,
-            @Param("surnameParam") String surname,
-            @Param("ageParam") Integer age);
+    List<StudentEntity> findAllByDetail(@Param("nameParam") String name, @Param("surnameParam") String surname, @Param("ageParam") Integer age);
 
     @Query("from StudentEntity where name=?1 and surname=?2 and age=?3")
     List<StudentEntity> findByAllByDetailPositional(String name, String surname, Integer age);
@@ -72,4 +70,39 @@ public interface StudentRepository extends CrudRepository<StudentEntity, Integer
     @Transactional
     @Query("delete from StudentEntity where name=?1 and surname=?2")
     void deleteByNameAndSurname(String name, String surname);
+
+    @Query("From StudentEntity order by name asc ")
+    List<StudentEntity> findAllOrderByNameAsc();
+
+    @Modifying
+    @Transactional
+    @Query("insert into StudentEntity(name, surname, gender, age, level) values(:name, :surname, :gender, :age, :level)")
+    StudentEntity createByQuery(@Param("name") String name, @Param("surname") String surname, @Param("gender") Gender gender, @Param("age") Integer age, @Param("level") Integer level);
+
+    @Query("from StudentEntity ")
+    List<StudentEntity> findAllByQuery();
+
+    @Query("from StudentEntity where id=:idParam")
+    Optional<StudentEntity> findById(@Param("idParam") int idParam);
+
+    @Transactional
+    @Modifying
+    @Query("update StudentEntity set name=:name, surname=:surname, level=:level, age=:age, gender=:gender where id=:id")
+    void updateStudentById(@Param("name") String name, @Param("surname") String surname, @Param("level") Integer level, @Param("age") Integer age, @Param("gender") Gender gender, @Param("id") Integer id);
+
+    @Transactional
+    @Modifying
+    @Query("delete StudentEntity where id=:idParam")
+    void deleteByIdQ(@Param("idParam") Integer idParam);
+
+    @Query("from StudentEntity where name=:nameParam")
+    Optional<StudentEntity> findByNameQ(@Param("nameParam") String nameParam);
+
+    @Query("from StudentEntity where surname=:surnameParam")
+    Optional<StudentEntity> findBySurnameQ(@Param("surnameParam") String surnameParam);
+
+    @Query("from StudentEntity where createdAt between :fromDate and :toDate")
+    List<StudentEntity> findByDate(@Param("fromDate") LocalDateTime fromDate,  @Param("toDate") LocalDateTime toDate);
+
+
 }
