@@ -71,34 +71,34 @@ StudentCourse
     	dataFrom = 2024-07-22
     	dataTo = 2024-07-28
 	9. ✅ Studentni olgan barcha baxolari vaqt boyicha kamayish tartibida sord qiling.
-	   ✅ studentId = 1
+	    studentId = 1
 	10.✅ Studentni berilgan curse dan olgan baxolari vaqt boyicha kamayish tartibida sord qiling.
-	   ✅ studentId = 1
-	   ✅ courseId = 4
-	11.✅ Studentni eng oxirda olgan baxosi, va curse nomi.
-	   ✅ studentId = 1
-	12.✅ Studentni olgan eng katta 3ta baxosi.
-	   ✅ studentId = 1
-	13.✅ Studentni eng birinchi olgan baxosi.
-	   ✅ studentId = 1
-	14.✅ Studenti  berilgan course dan olgan birinchi baxosi.
 	    studentId = 1
 	    courseId = 4
-	15.✅ Studentni berilgan cuorse-dan olgan eng baland baxosi.
+	11. ✅ Studentni eng oxirda olgan baxosi, va curse nomi.
+	    studentId = 1
+	12. ✅Studentni olgan eng katta 3ta baxosi.
+	    studentId = 1
+	13. ✅Studentni eng birinchi olgan baxosi.
+	    studentId = 1
+	14. ✅Studenti  berilgan course dan olgan birinchi baxosi.
+	    studentId = 1
+	    courseId = 4
+	15. ✅ Studentni berilgan cuorse-dan olgan eng baland baxosi.
 	    studentId = 1,
 	    courseId = 1
-	16.✅ Studentni o'rtacha olgan baxolari.   sum/count
+	16. ✅Studentni o'rtacha olgan baxolari.   sum/count
 	    studentId = 1
-	17.✅ Studentni berilgan curse dan olgan o'rtacha baxolari.  sum/count
+	17. ✅Studentni berilgan curse dan olgan o'rtacha baxolari.  sum/count
 	    studentId = 1
 	    courseId = 1
-	18.✅ Studentni berilgan baxodan katta bo'lgan baxolari soni.
+	18. ✅Studentni berilgan baxodan katta bo'lgan baxolari soni.
 	    studentId = 1,
 	    mark = 3
-	19.✅ Berilgan Cursdan eng baland baxo.
-	20. Berilgan Cursdan o'lingan o'rtacha baxo.   sum/count
+	19. ✅Berilgan Cursdan eng baland baxo.
+	20. ✅Berilgan Cursdan olingan o'rtacha baxo.   sum/count
 	    courseId = 1
-	21. Berilgan Course-dan olingan baxolar soni.
+	21. ✅Berilgan Course-dan olingan baxolar soni.
 	22. StudentCourseMark pagination.
 	23. StudentCourseMark pagination by given studentId. List should be sorted by createdDate.
 	24. StudentCourseMark pagination by given courseId.  List should be sorted by createdDate.

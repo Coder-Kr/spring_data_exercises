@@ -3,6 +3,7 @@ package coderuz.services;
 import coderuz.dto.CourseDTO;
 import coderuz.dto.StudentCourseDTO;
 import coderuz.dto.StudentDTO;
+import coderuz.entity.CourseEntity;
 import coderuz.entity.StudentCourseEntity;
 import coderuz.entity.StudentEntity;
 import coderuz.repository.StudetnCourseRepository;
@@ -133,7 +134,7 @@ public class StudentCourseService {
         LocalDateTime startDate = LocalDateTime.of(date, LocalTime.MIN);
         LocalDateTime endDate = LocalDateTime.of(date, LocalTime.MAX);
 
-        List<StudentCourseEntity> result = studetnCourseRepository.findByStudentIdAndCreatedAtBetween(studentId, startDate, endDate);
+        List<StudentCourseEntity> result = studetnCourseRepository.getByDates(studentId, startDate, endDate);
         List<StudentCourseDTO> list = new LinkedList<>();
         for (StudentCourseEntity entity : result) {
             list.add(toDTO(entity));
@@ -180,23 +181,29 @@ public class StudentCourseService {
     }
 
     public StudentCourseDTO findTopByStudentIdOrderByCreatedAtDesc(Integer studentId) {
-        Optional<StudentCourseEntity> result = studetnCourseRepository.findTopByStudentIdOrderByCreatedAtDesc(studentId);
-
+        Optional<StudentCourseEntity> result = studetnCourseRepository.getLastMarkOfStudent(studentId);
         if (result.isEmpty()) {
             throw new IllegalArgumentException("Student course not found");
         }
+        CourseDTO course = courseService.getById(result.get().getCourseId());
         StudentCourseEntity entity = result.get();
-        return toDTO(entity);
+        StudentCourseDTO studentCourseDTO = toDTO(entity);
+        studentCourseDTO.setCourse(course);
+        return studentCourseDTO;
     }
 
     public List<StudentCourseDTO> findThreeTopByStudentIdOrderByCreatedAtDesc(Integer studentId) {
-        List<StudentCourseEntity> result = studetnCourseRepository.findTop3ByStudentIdOrderByCreatedAtDesc(studentId);
+//        List<StudentCourseEntity> result = studetnCourseRepository.findTop3ByStudentIdOrderByCreatedAtDesc(studentId);
+        List<StudentCourseEntity> result = studetnCourseRepository.getLast3TopMarkOfStudent(studentId);
         if (result.isEmpty()) {
             throw new IllegalArgumentException("Student course not found");
         }
+        CourseDTO course = courseService.getById(result.get(0).getCourseId());
         List<StudentCourseDTO> list = new LinkedList<>();
         for (StudentCourseEntity entity : result) {
-            list.add(toDTO(entity));
+            StudentCourseDTO studentCourseDTO = toDTO(entity);
+            studentCourseDTO.setCourse(course);
+            list.add(studentCourseDTO);
         }
         return list;
     }
@@ -233,6 +240,45 @@ public class StudentCourseService {
 
     }
 
+    public StudentCourseDTO getFirstMarkOfStudent(Integer studentId) {
+        StudentCourseEntity studentCourseEntity = studetnCourseRepository.getFirstMarkOfStudent(studentId);
+        if (studentCourseEntity == null) {
+            throw new IllegalArgumentException("Student course not found");
+        }
+        CourseDTO course = courseService.getById(studentCourseEntity.getCourseId());
+        StudentDTO studentDTO = studentService.getById(studentCourseEntity.getStudentId());
+        StudentCourseDTO studentCourseDTO = toDTO(studentCourseEntity);
+        studentCourseDTO.setCourse(course);
+        studentCourseDTO.setStudent(studentDTO);
+        return studentCourseDTO;
+    }
 
+    public StudentCourseDTO getFirstMarkOfCourse(Integer courseId, Integer studentId){
+        StudentCourseEntity studentCourseEntity = studetnCourseRepository.getFirstMarkOfCourse(courseId, studentId);
+        if (studentCourseEntity == null) {
+            throw new IllegalArgumentException("Student course not found");
+        }
+        CourseDTO course = courseService.getById(studentCourseEntity.getCourseId());
+        StudentDTO studentDTO = studentService.getById(studentCourseEntity.getStudentId());
+        StudentCourseDTO studentCourseDTO = toDTO(studentCourseEntity);
+        studentCourseDTO.setCourse(course);
+        studentCourseDTO.setStudent(studentDTO);
+        return studentCourseDTO;
+    }
+
+    public double getAvgMarkOfStudent(Integer studentId) {
+        double studentCourseEntity = studetnCourseRepository.getAvgMarkOfStudent(studentId);
+        return studentCourseEntity;
+
+    }
+
+    public double getAvgMarkOfStudentByCourse(Integer studentId, Integer courseId) {
+        return studetnCourseRepository.getAvgMarkOfStudentByCourse(studentId, courseId);
+    }
+
+    public long getTotalMarkFromMark(Integer mark, Integer studentId) {
+        System.out.println(">>>>>>>>>" + studetnCourseRepository.getTotalMarkFromMark(mark, studentId));
+        return studetnCourseRepository.getTotalMarkFromMark(mark, studentId);
+    }
 
 }

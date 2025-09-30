@@ -107,4 +107,36 @@ public class StudentCourserController {
         return ResponseEntity.ok().body(result);
     }
 
+    @GetMapping("/getFirstMark/{id}")
+    private ResponseEntity<StudentCourseDTO> getFirstMarkOfStudent(@PathVariable("id") Integer studentId) {
+        StudentCourseDTO result = studentCourseService.getFirstMarkOfStudent(studentId);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping("/getFirstMarkOfCourse/{studentId}/{courseId}")
+    private ResponseEntity<StudentCourseDTO> getFirstMarkOfCourse(@PathVariable("studentId") Integer studentId, @PathVariable("courseId")  Integer courseId) {
+        StudentCourseDTO result = studentCourseService.getFirstMarkOfCourse(studentId, courseId);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping("/getAvgMarkOfStudent/{studentId}")
+    private ResponseEntity<Double> getAvgMarkByStudentId(@PathVariable("studentId") Integer studentId) {
+        double result = studentCourseService.getAvgMarkOfStudent(studentId);
+        return ResponseEntity.ok().body(result);
+    }
+
+
+    @GetMapping("/getAvgMarkOfStudentByCourse/{studentId}/{courseId}")
+    private ResponseEntity<Double> getAvgMarkOfStudentByCourse(@PathVariable("studentId") Integer studentId,  @PathVariable("courseId")  Integer courseId) {
+        double result = studentCourseService.getAvgMarkOfStudentByCourse(studentId, courseId);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping("/getTotalMarkFromMark/{mark}/{studentId}")
+    private ResponseEntity<Long> getTotalMarkFromMark(@PathVariable("mark")  Integer mark, @PathVariable("studentId") Integer studentId) {
+        Long result = studentCourseService.getTotalMarkFromMark(mark, studentId);
+        return ResponseEntity.ok().body(result);
+    }
+
+
 }
