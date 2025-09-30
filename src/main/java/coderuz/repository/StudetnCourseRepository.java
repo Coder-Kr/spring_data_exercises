@@ -102,7 +102,8 @@ public interface StudetnCourseRepository extends CrudRepository<StudentCourseEnt
     @Query("select avg(mark) from StudentCourseEntity where courseId=:courseId")
     double getAvgMarkByCourse(@Param("courseId") Integer courseId);
 
-    @Query("select count(*) from StudentCourseEntity where courseId=:courseId")
+    @Query("select count(mark) from StudentCourseEntity where courseId=:courseId")
     long getCountOfMark(@Param("courseId") Integer courseId);
+
 
 }

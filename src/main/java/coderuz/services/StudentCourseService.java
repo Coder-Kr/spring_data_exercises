@@ -277,7 +277,6 @@ public class StudentCourseService {
     }
 
     public long getTotalMarkFromMark(Integer mark, Integer studentId) {
-        System.out.println(">>>>>>>>>" + studetnCourseRepository.getTotalMarkFromMark(mark, studentId));
         return studetnCourseRepository.getTotalMarkFromMark(mark, studentId);
     }
 
