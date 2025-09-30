@@ -42,5 +42,13 @@ public class StudentEntity {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    public StudentEntity() {
+
+    }
+
+    public StudentEntity(String surname, Integer level){
+        this.surname = surname;
+        this.level = level;
+    }
 
 }

@@ -220,4 +220,19 @@ public class StudentService {
     public void deleteByNameAndSurname(StudentDTO studentDTO) {
         studentRepository.deleteByNameAndSurname(studentDTO.getName(), studentDTO.getSurname());
     }
+
+    public List<StudentDTO> getAllNameList() {
+        List<Object[]> result = studentRepository.getAllNameList();
+
+        List<StudentDTO> list = new LinkedList<>();
+
+        for (Object[] object : result) {
+            StudentDTO dto = new StudentDTO();
+            dto.setName((String) object[0]);
+            dto.setSurname((String) object[1]);
+
+            list.add(dto);
+        }
+        return list;
+    }
 }

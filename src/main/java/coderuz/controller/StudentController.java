@@ -105,4 +105,10 @@ public class StudentController {
         studentService.deleteByNameAndSurname(studentDTO);
         return ResponseEntity.ok().body("success");
     }
+
+    @GetMapping("/getAllNameList")
+    private ResponseEntity<List<StudentDTO>> getAllNameList(){
+        List<StudentDTO> result = studentService.getAllNameList();
+        return ResponseEntity.ok().body(result);
+    }
 }

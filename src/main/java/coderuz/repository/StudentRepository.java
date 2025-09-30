@@ -1,5 +1,6 @@
 package coderuz.repository;
 
+import coderuz.dto.StudentNameSurnameDTO;
 import coderuz.entity.StudentCourseEntity;
 import coderuz.entity.StudentEntity;
 import coderuz.enums.Gender;
@@ -104,5 +105,12 @@ public interface StudentRepository extends CrudRepository<StudentEntity, Integer
     @Query("from StudentEntity where createdAt between :fromDate and :toDate")
     List<StudentEntity> findByDate(@Param("fromDate") LocalDateTime fromDate,  @Param("toDate") LocalDateTime toDate);
 
+    @Query("Select s.name, s.surname from StudentEntity s")
+    List<Object[]> getAllNameList();
 
+    @Query("Select new StudentEntity(s.surname, s.level) from StudentEntity s")
+    List<StudentEntity> getAllStudents();
+
+    @Query("Select new coderuz.dto.StudentNameSurnameDTO(s.name, s.surname) from StudentEntity s")
+    List<StudentNameSurnameDTO> findAllStudentNameSurnameDTO();
 }
