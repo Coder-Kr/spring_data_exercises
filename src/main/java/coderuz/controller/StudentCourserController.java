@@ -140,9 +140,9 @@ public class StudentCourserController {
         return ResponseEntity.ok().body(result);
     }
 
-    @GetMapping("/getStudentDetailInfo/{id}")
+    @GetMapping("/getStudentCourseDetailInfo/{id}")
     private ResponseEntity<List<StudentDetailInfoMapper>> getStudentDetailInfo(@PathVariable("id") Integer id){
-        List<StudentDetailInfoMapper> result = studentCourseService.getStudentDetailInfo(id);
+        List<StudentDetailInfoMapper> result = studentCourseService.getStudentCourseDetailInfo(id);
         return ResponseEntity.ok().body(result);
      }
 

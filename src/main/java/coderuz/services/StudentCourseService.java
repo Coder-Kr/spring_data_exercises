@@ -281,8 +281,8 @@ public class StudentCourseService {
         return studetnCourseRepository.getTotalMarkFromMark(mark, studentId);
     }
 
-    public List<StudentDetailInfoMapper> getStudentDetailInfo(Integer id){
-        List<StudentDetailInfoMapper> result =  studetnCourseRepository.getStudentDetailInfo(id);
+    public List<StudentDetailInfoMapper> getStudentCourseDetailInfo(Integer id){
+        List<StudentDetailInfoMapper> result =  studetnCourseRepository.getStudentCourseDetailInfo(id);
         if (result.isEmpty()) {
             throw new IllegalArgumentException("Student course not found");
         }
