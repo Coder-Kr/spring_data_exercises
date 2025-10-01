@@ -1,8 +1,10 @@
 package coderuz.controller;
 
 import coderuz.dto.StudentCourseDTO;
+import coderuz.mapper.StudentDetailInfoMapper;
 import coderuz.services.StudentCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -138,5 +140,10 @@ public class StudentCourserController {
         return ResponseEntity.ok().body(result);
     }
 
+    @GetMapping("/getStudentDetailInfo/{id}")
+    private ResponseEntity<List<StudentDetailInfoMapper>> getStudentDetailInfo(@PathVariable("id") Integer id){
+        List<StudentDetailInfoMapper> result = studentCourseService.getStudentDetailInfo(id);
+        return ResponseEntity.ok().body(result);
+     }
 
 }

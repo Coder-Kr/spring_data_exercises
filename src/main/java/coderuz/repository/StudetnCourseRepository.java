@@ -2,6 +2,7 @@ package coderuz.repository;
 
 import coderuz.entity.StudentCourseEntity;
 import coderuz.entity.StudentEntity;
+import coderuz.mapper.StudentDetailInfoMapper;
 import jakarta.annotation.PreDestroy;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.Modifying;
@@ -104,6 +105,19 @@ public interface StudetnCourseRepository extends CrudRepository<StudentCourseEnt
 
     @Query("select count(mark) from StudentCourseEntity where courseId=:courseId")
     long getCountOfMark(@Param("courseId") Integer courseId);
+
+    @Query("select sc.id as id, " +
+            "sc.studentId as studentId, " +
+            "sc.courseId as courseId, " +
+            "sc.mark as mark, " +
+            "sc.createdAt as createdDate, " +
+            "s.name as studentName, " +
+            "s.surname as studentSurname, " +
+            "c.name as courseName " +
+            "from StudentCourseEntity as sc " +
+            "left join StudentEntity as s on s.id = sc.studentId  " +
+            "left join CourseEntity as c on c.id = sc.courseId")
+    List<StudentDetailInfoMapper> getStudentDetailInfo(@Param("courseId") Integer courseId);
 
 
 }

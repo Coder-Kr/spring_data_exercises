@@ -6,6 +6,7 @@ import coderuz.dto.StudentDTO;
 import coderuz.entity.CourseEntity;
 import coderuz.entity.StudentCourseEntity;
 import coderuz.entity.StudentEntity;
+import coderuz.mapper.StudentDetailInfoMapper;
 import coderuz.repository.StudetnCourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -278,6 +279,14 @@ public class StudentCourseService {
 
     public long getTotalMarkFromMark(Integer mark, Integer studentId) {
         return studetnCourseRepository.getTotalMarkFromMark(mark, studentId);
+    }
+
+    public List<StudentDetailInfoMapper> getStudentDetailInfo(Integer id){
+        List<StudentDetailInfoMapper> result =  studetnCourseRepository.getStudentDetailInfo(id);
+        if (result.isEmpty()) {
+            throw new IllegalArgumentException("Student course not found");
+        }
+        return result;
     }
 
 }

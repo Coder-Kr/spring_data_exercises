@@ -122,4 +122,6 @@ public interface StudentRepository extends CrudRepository<StudentEntity, Integer
     @Query("select s.id as id, s.name as name, s.surname as surname from StudentEntity s")
     List<StudentInfoMapper> getStudentInfo();
 
+
+
 }
