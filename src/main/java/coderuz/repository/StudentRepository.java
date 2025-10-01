@@ -4,6 +4,7 @@ import coderuz.dto.StudentNameSurnameDTO;
 import coderuz.entity.StudentCourseEntity;
 import coderuz.entity.StudentEntity;
 import coderuz.enums.Gender;
+import coderuz.mapper.StudentInfoMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -105,12 +106,20 @@ public interface StudentRepository extends CrudRepository<StudentEntity, Integer
     @Query("from StudentEntity where createdAt between :fromDate and :toDate")
     List<StudentEntity> findByDate(@Param("fromDate") LocalDateTime fromDate,  @Param("toDate") LocalDateTime toDate);
 
+    //=========Partial select==========//
     @Query("Select s.name, s.surname from StudentEntity s")
     List<Object[]> getAllNameList();
 
+    //=========Constructor select==========//
     @Query("Select new StudentEntity(s.surname, s.level) from StudentEntity s")
     List<StudentEntity> getAllStudents();
 
+    //=========non entity constructor==========//
     @Query("Select new coderuz.dto.StudentNameSurnameDTO(s.name, s.surname) from StudentEntity s")
     List<StudentNameSurnameDTO> findAllStudentNameSurnameDTO();
+
+    //=========Interface Mapper==========//
+    @Query("select s.id as id, s.name as name, s.surname as surname from StudentEntity s")
+    List<StudentInfoMapper> getStudentInfo();
+
 }

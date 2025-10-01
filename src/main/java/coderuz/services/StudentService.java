@@ -3,6 +3,7 @@ package coderuz.services;
 import coderuz.dto.StudentDTO;
 import coderuz.entity.StudentEntity;
 import coderuz.enums.Gender;
+import coderuz.mapper.StudentInfoMapper;
 import coderuz.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -234,5 +235,9 @@ public class StudentService {
             list.add(dto);
         }
         return list;
+    }
+
+    public List<StudentInfoMapper> getShortInfo(){
+        return studentRepository.getStudentInfo();
     }
 }

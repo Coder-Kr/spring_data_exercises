@@ -3,6 +3,7 @@ package coderuz.controller;
 import coderuz.dto.StudentDTO;
 
 import coderuz.enums.Gender;
+import coderuz.mapper.StudentInfoMapper;
 import coderuz.services.StudentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,6 +110,12 @@ public class StudentController {
     @GetMapping("/getAllNameList")
     private ResponseEntity<List<StudentDTO>> getAllNameList(){
         List<StudentDTO> result = studentService.getAllNameList();
+        return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping("/getShortInfo")
+    private ResponseEntity<List<StudentInfoMapper>> getShortInfo(){
+        List<StudentInfoMapper> result = studentService.getShortInfo();
         return ResponseEntity.ok().body(result);
     }
 }
