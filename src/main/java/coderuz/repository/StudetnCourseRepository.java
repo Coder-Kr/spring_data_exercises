@@ -116,6 +116,6 @@ public interface StudetnCourseRepository extends CrudRepository<StudentCourseEnt
             "c.name as courseName " +
             "from StudentCourseEntity as sc " +
             "left join StudentEntity as s on s.id = sc.studentId  " +
-            "left join CourseEntity as c on c.id = sc.courseId where courseId=:courseId")
-    List<StudentDetailInfoMapper> getStudentCourseDetailInfo(@Param("courseId") Integer courseId);
+            "left join CourseEntity as c on c.id = sc.courseId where sc.id=:id")
+    Optional<StudentDetailInfoMapper> getStudentCourseDetailInfo(@Param("id") Integer id);
 }

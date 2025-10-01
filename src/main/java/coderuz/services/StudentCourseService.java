@@ -281,12 +281,30 @@ public class StudentCourseService {
         return studetnCourseRepository.getTotalMarkFromMark(mark, studentId);
     }
 
-    public List<StudentDetailInfoMapper> getStudentCourseDetailInfo(Integer id){
-        List<StudentDetailInfoMapper> result =  studetnCourseRepository.getStudentCourseDetailInfo(id);
-        if (result.isEmpty()) {
+    public StudentCourseDTO getStudentCourseDetailInfo(Integer id){
+        Optional<StudentDetailInfoMapper> optional =  studetnCourseRepository.getStudentCourseDetailInfo(id);
+        if (optional.isEmpty()) {
             throw new IllegalArgumentException("Student course not found");
         }
-        return result;
+
+        StudentDetailInfoMapper studentDetailInfoMapper = optional.get();
+
+        StudentCourseDTO dto = new StudentCourseDTO();
+        dto.setId(studentDetailInfoMapper.getId());
+        dto.setMark(studentDetailInfoMapper.getMark());
+        dto.setCreatedAt(studentDetailInfoMapper.getCreatedDate());
+
+        StudentDTO studentDTO = new StudentDTO();
+        studentDTO.setId(studentDetailInfoMapper.getStudentId());
+        studentDTO.setName(studentDetailInfoMapper.getStudentName());
+        studentDTO.setSurname(studentDetailInfoMapper.getStudentSurname());
+
+        CourseDTO courseDTO = new CourseDTO();
+        courseDTO.setId(studentDetailInfoMapper.getCourseId());
+        courseDTO.setName(studentDetailInfoMapper.getCourseName());
+        dto.setCourse(courseDTO);
+        dto.setStudent(studentDTO);
+        return dto;
     }
 
 }

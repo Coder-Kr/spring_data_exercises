@@ -1,6 +1,7 @@
 package coderuz.dto;
 
 import coderuz.enums.Gender;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class StudentDTO {
     private Integer id;
     @NotBlank(message = "Name is required")
