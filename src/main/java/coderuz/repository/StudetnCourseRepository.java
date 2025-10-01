@@ -118,4 +118,18 @@ public interface StudetnCourseRepository extends CrudRepository<StudentCourseEnt
             "left join StudentEntity as s on s.id = sc.studentId  " +
             "left join CourseEntity as c on c.id = sc.courseId where sc.id=:id")
     Optional<StudentDetailInfoMapper> getStudentCourseDetailInfo(@Param("id") Integer id);
+
+    @Query("select sc.id as id, " +
+            "sc.studentId as studentId, " +
+            "sc.courseId as courseId, " +
+            "sc.mark as mark, " +
+            "sc.createdAt as createdDate, " +
+            "s.name as studentName, " +
+            "s.surname as studentSurname, " +
+            "c.name as courseName " +
+            "From StudentCourseEntity as sc " +
+            "left join  sc.student as s " +
+            "left join  sc.course as c " +
+            "where sc.id=:id")
+    Optional<StudentDetailInfoMapper> getStudentCourseDetailInfoHql(@Param("id") Integer id);
 }
