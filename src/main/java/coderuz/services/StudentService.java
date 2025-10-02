@@ -7,10 +7,7 @@ import coderuz.enums.Gender;
 import coderuz.mapper.StudentInfoMapper;
 import coderuz.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -251,7 +248,8 @@ public class StudentService {
 
     public PageImpl<StudentDTO> pagination(int page, int size) {
 //        page = page - 1; //select * from student offset(page-1)*size limit size -> hibernate automatic (page - 1) qilmaydi
-        Pageable pageable = PageRequest.of(page, size);
+        Sort sort = Sort.by("createdAt").descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
         Page<StudentEntity> pageObj = studentRepository.findAll(pageable);
 
         List<StudentEntity> entityList = pageObj.getContent();
