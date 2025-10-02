@@ -8,6 +8,7 @@ import coderuz.mapper.StudentInfoMapper;
 import coderuz.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -248,7 +249,7 @@ public class StudentService {
 
     //=========Pagination==========//
 
-    public PageResponse<StudentDTO> pagination(int page, int size) {
+    public PageImpl<StudentDTO> pagination(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<StudentEntity> pageObj = studentRepository.findAll(pageable);
 
@@ -259,10 +260,9 @@ public class StudentService {
         }
         long total = pageObj.getTotalElements();
 
-        PageResponse<StudentDTO> pageResponse = new PageResponse<>();
-        pageResponse.setContent(dtoList);
-        pageResponse.setTotalCount(total);
-
-        return pageResponse;
+//        PageResponse<StudentDTO> pageResponse = new PageResponse<>();
+//        pageResponse.setContent(dtoList);
+//        pageResponse.setTotalCount(total);
+        return new PageImpl<StudentDTO>(dtoList, pageable, total);
     }
 }
