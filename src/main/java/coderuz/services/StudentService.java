@@ -250,6 +250,7 @@ public class StudentService {
     //=========Pagination==========//
 
     public PageImpl<StudentDTO> pagination(int page, int size) {
+//        page = page - 1; //select * from student offset(page-1)*size limit size -> hibernate automatic (page - 1) qilmaydi
         Pageable pageable = PageRequest.of(page, size);
         Page<StudentEntity> pageObj = studentRepository.findAll(pageable);
 

@@ -7,6 +7,7 @@ import coderuz.mapper.StudentInfoMapper;
 import coderuz.services.StudentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -108,14 +109,23 @@ public class StudentController {
     }
 
     @GetMapping("/getAllNameList")
-    private ResponseEntity<List<StudentDTO>> getAllNameList(){
+    private ResponseEntity<List<StudentDTO>> getAllNameList() {
         List<StudentDTO> result = studentService.getAllNameList();
         return ResponseEntity.ok().body(result);
     }
 
     @GetMapping("/getShortInfo")
-    private ResponseEntity<List<StudentInfoMapper>> getShortInfo(){
+    private ResponseEntity<List<StudentInfoMapper>> getShortInfo() {
         List<StudentInfoMapper> result = studentService.getShortInfo();
+        return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping("/pagination")
+    private ResponseEntity<PageImpl<StudentDTO>> pagination(
+            @RequestParam("page") int page,
+            @RequestParam("size") int size) {
+
+        PageImpl<StudentDTO> result = studentService.pagination(page, size);
         return ResponseEntity.ok().body(result);
     }
 }
