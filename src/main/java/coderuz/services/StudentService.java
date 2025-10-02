@@ -1,11 +1,15 @@
 package coderuz.services;
 
+import coderuz.dto.PageResponse;
 import coderuz.dto.StudentDTO;
 import coderuz.entity.StudentEntity;
 import coderuz.enums.Gender;
 import coderuz.mapper.StudentInfoMapper;
 import coderuz.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -237,7 +241,28 @@ public class StudentService {
         return list;
     }
 
-    public List<StudentInfoMapper> getShortInfo(){
+    public List<StudentInfoMapper> getShortInfo() {
         return studentRepository.getStudentInfo();
+    }
+
+
+    //=========Pagination==========//
+
+    public PageResponse<StudentDTO> pagination(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<StudentEntity> pageObj = studentRepository.findAll(pageable);
+
+        List<StudentEntity> entityList = pageObj.getContent();
+        List<StudentDTO> dtoList = new LinkedList<>();
+        for(StudentEntity entity : entityList){
+            dtoList.add(toDTO(entity));
+        }
+        long total = pageObj.getTotalElements();
+
+        PageResponse<StudentDTO> pageResponse = new PageResponse<>();
+        pageResponse.setContent(dtoList);
+        pageResponse.setTotalCount(total);
+
+        return pageResponse;
     }
 }

@@ -9,13 +9,14 @@ import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public interface StudentRepository extends CrudRepository<StudentEntity, Integer> {
+public interface StudentRepository extends CrudRepository<StudentEntity, Integer>, PagingAndSortingRepository<StudentEntity, Integer> {
 
     List<StudentEntity> findByName(String name);
 
@@ -122,6 +123,6 @@ public interface StudentRepository extends CrudRepository<StudentEntity, Integer
     @Query("select s.id as id, s.name as name, s.surname as surname from StudentEntity s")
     List<StudentInfoMapper> getStudentInfo();
 
-
+    //=========Pagination==========//
 
 }
