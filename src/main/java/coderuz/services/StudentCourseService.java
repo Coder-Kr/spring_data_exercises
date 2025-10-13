@@ -307,4 +307,12 @@ public class StudentCourseService {
         return dto;
     }
 
+    public Integer getTopMark(){
+        Optional<Integer> optional = studetnCourseRepository.getTopMark();
+        if (optional.isEmpty()) {
+            throw new IllegalArgumentException("Studentcourse not found");
+        }
+        return optional.get();
+    }
+
 }

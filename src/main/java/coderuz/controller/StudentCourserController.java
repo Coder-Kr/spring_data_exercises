@@ -146,4 +146,10 @@ public class StudentCourserController {
         return ResponseEntity.ok().body(result);
      }
 
+     @GetMapping("/getTopMark")
+    private ResponseEntity<Integer> getTopMark() {
+        Integer result = studentCourseService.getTopMark();
+        return ResponseEntity.ok().body(result);
+     }
+
 }
