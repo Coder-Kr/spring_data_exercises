@@ -85,7 +85,7 @@ public interface StudetnCourseRepository extends CrudRepository<StudentCourseEnt
     @Query(nativeQuery = true, value = "select * from student_course where student_id=:studentId and course_id=:courseId order by created_at asc limit 1")
     StudentCourseEntity getFirstMarkOfCourse(@Param("studentId") Integer studentId, @Param("courseId") Integer courseId);
 
-    @Query(nativeQuery = true, value = "select * from student_course where student_id=:studentId and course_id=:courseId order by mark desc limit 1")
+    @Query(nativeQuery = true, value = "select * from student_course sc where sc.student_id=:studentId and sc.course_id=:courseId order by mark desc limit 1")
     StudentCourseEntity getTopMarkOfCourse(@Param("studentId") Integer studentId, @Param("courseId") Integer courseId);
 
     @Query("select avg(mark) from StudentCourseEntity where studentId=?1")

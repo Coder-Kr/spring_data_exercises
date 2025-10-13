@@ -22,7 +22,7 @@ public interface CourseRepository extends CrudRepository<CourseEntity, Integer> 
 
     List<CourseEntity> findByCreatedAtBetween(LocalDateTime createdAt1, LocalDateTime createdAt2);
 
-    @Query("from CourseEntity where id=:id")
+    @Query("from CourseEntity c where  c.id=:id")
     CourseEntity findById(@Param("id") int id);
 
     @Query("from CourseEntity ")
@@ -30,8 +30,8 @@ public interface CourseRepository extends CrudRepository<CourseEntity, Integer> 
 
     @Modifying
     @Transactional
-    @Query("update CourseEntity set name=:name, duration=:duration where id=:id")
-    void updateByIdQ(@Param("name") String name, @Param("duration") Integer duration);
+    @Query("update CourseEntity c set c.name=:name, c.duration=:duration where c.id=:id")
+    void updateByIdQ(@Param("id") Integer id, @Param("name") String name, @Param("duration") Integer duration);
 
     @Modifying
     @Transactional
@@ -46,7 +46,6 @@ public interface CourseRepository extends CrudRepository<CourseEntity, Integer> 
 
     @Query("from CourseEntity where createdAt between :fromDate and :toDate")
     List<CourseEntity> findByDates(@Param("fromDate") String fromDate, @Param("toDate") String toDate);
-
 
 
 }
