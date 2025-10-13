@@ -6,6 +6,7 @@ import coderuz.entity.StudentEntity;
 import coderuz.enums.Gender;
 import coderuz.mapper.StudentInfoMapper;
 import coderuz.repository.StudentRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -73,6 +74,7 @@ public class StudentService {
         return toDTO(optional.get());
     }
 
+    @Transactional
     public StudentDTO updateById(Integer id, StudentDTO studentDTO) {
         Optional<StudentEntity> optional = studentRepository.findById(id);
         if (optional.isEmpty()) {
@@ -97,6 +99,7 @@ public class StudentService {
 
     }
 
+    @Transactional
     public String deleteById(Integer id) {
         Optional<StudentEntity> optional = studentRepository.findById(id);
         if (optional.isEmpty()) {

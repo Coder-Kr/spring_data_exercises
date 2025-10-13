@@ -88,12 +88,11 @@ public interface StudentRepository extends CrudRepository<StudentEntity, Integer
     @Query("from StudentEntity where id=:idParam")
     Optional<StudentEntity> findById(@Param("idParam") int idParam);
 
-    @Transactional
+
     @Modifying
     @Query("update StudentEntity set name=:name, surname=:surname, level=:level, age=:age, gender=:gender where id=:id")
     void updateStudentById(@Param("name") String name, @Param("surname") String surname, @Param("level") Integer level, @Param("age") Integer age, @Param("gender") Gender gender, @Param("id") Integer id);
 
-    @Transactional
     @Modifying
     @Query("delete StudentEntity where id=:idParam")
     void deleteByIdQ(@Param("idParam") Integer idParam);
