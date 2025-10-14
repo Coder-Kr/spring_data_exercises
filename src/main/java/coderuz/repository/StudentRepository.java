@@ -6,11 +6,13 @@ import coderuz.entity.StudentEntity;
 import coderuz.enums.Gender;
 import coderuz.mapper.StudentInfoMapper;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -123,5 +125,7 @@ public interface StudentRepository extends CrudRepository<StudentEntity, Integer
     List<StudentInfoMapper> getStudentInfo();
 
     //=========Pagination==========//
+
+    Page<StudentEntity> findByName(String name, Pageable pageable); //with name query generation
 
 }

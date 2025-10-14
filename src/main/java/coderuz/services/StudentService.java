@@ -267,4 +267,25 @@ public class StudentService {
 //        pageResponse.setTotalCount(total);
         return new PageImpl<StudentDTO>(dtoList, pageable, total);
     }
+
+    public PageImpl<StudentDTO> findByNameWithPagination(String name, int page, int size) {
+        System.out.println("name>>>>" + name);
+        System.out.println("page>>>>" + page);
+        System.out.println("size>>>>" + size);
+        Sort sort = Sort.by("createdAt").descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<StudentEntity> result = studentRepository.findByName(name, pageable);
+
+        long totalCount = result.getTotalElements();
+        List<StudentEntity> entityList = result.getContent();
+
+        List<StudentDTO> dtoList = new LinkedList<>();
+        for(StudentEntity entity : entityList){
+            System.out.println("name Entity>>>>" + entity.getName());
+            dtoList.add(toDTO(entity));
+        }
+
+        return  new PageImpl<StudentDTO>(dtoList, pageable, totalCount);
+
+    }
 }

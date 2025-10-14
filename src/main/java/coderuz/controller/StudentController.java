@@ -128,4 +128,10 @@ public class StudentController {
         PageImpl<StudentDTO> result = studentService.pagination(page, size);
         return ResponseEntity.ok().body(result);
     }
+
+    @GetMapping("/pagination/name")
+    private ResponseEntity<PageImpl<StudentDTO>> findByNameWithPagination(@RequestParam("page") int page, @RequestParam("size") int size, @RequestBody StudentDTO studentDTO){
+        PageImpl<StudentDTO> result = studentService.findByNameWithPagination(studentDTO.getName(), page, size);
+        return ResponseEntity.ok().body(result);
+    }
 }
