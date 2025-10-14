@@ -250,10 +250,10 @@ public class StudentService {
     //=========Pagination==========//
 
     public PageImpl<StudentDTO> pagination(int page, int size) {
-//        page = page - 1; //select * from student offset(page-1)*size limit size -> hibernate automatic (page - 1) qilmaydi
+//        page = page - 1; //select * from student offset(page-1)*size limit size -> hibernate automatic (page - 1) qilmaydi yani page 1 dan emas 0 dan boshlanadi.
         Sort sort = Sort.by("createdAt").descending();
         Pageable pageable = PageRequest.of(page, size, sort);
-        Page<StudentEntity> pageObj = studentRepository.findAll(pageable);
+        Page<StudentEntity> pageObj = studentRepository.findAll(pageable); //StudentRepositoryda PagingAndSortingRepository dan extends qilganimiz uchun .findAll() pageable ni argument sifatida olyabdi.
 
         List<StudentEntity> entityList = pageObj.getContent();
         List<StudentDTO> dtoList = new LinkedList<>();
