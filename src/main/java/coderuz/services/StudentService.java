@@ -298,4 +298,34 @@ public class StudentService {
         }
         return  new PageImpl<StudentDTO>(dtoList, pageable, totalCount);
     }
+
+    public PageImpl<StudentDTO> findByLevel(int level, int page, int size){
+        Sort sort = Sort.by("createdAt").descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<StudentEntity> result = studentRepository.findByLevel(level, pageable);
+
+        long totalCount = result.getTotalElements();
+        List<StudentEntity> entityList = result.getContent();
+        List<StudentDTO> dtoList = new LinkedList<>();
+        for(StudentEntity entity : entityList){
+            dtoList.add(toDTO(entity));
+        }
+
+        return new PageImpl<StudentDTO>(dtoList, pageable, totalCount);
+    }
+
+    public PageImpl<StudentDTO> findByGender(Gender gender, int page, int size){
+        Sort sort = Sort.by("createdAt").descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<StudentEntity> result = studentRepository.findByGender(gender, pageable);
+
+        long totalCount = result.getTotalElements();
+        List<StudentEntity> entityList = result.getContent();
+        List<StudentDTO> dtoList = new LinkedList<>();
+        for(StudentEntity entity : entityList){
+            dtoList.add(toDTO(entity));
+        }
+
+        return new PageImpl<StudentDTO>(dtoList, pageable, totalCount);
+    }
 }

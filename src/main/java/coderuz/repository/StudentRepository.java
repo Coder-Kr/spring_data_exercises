@@ -131,4 +131,8 @@ public interface StudentRepository extends CrudRepository<StudentEntity, Integer
     @Query("select s from StudentEntity s where s.name=?1 and s.age=?2")
     Page<StudentEntity> findAllByNameAndAge(String name, int age, Pageable pageable);
 
+    Page<StudentEntity> findByLevel(int level, Pageable pageable);
+
+    Page<StudentEntity> findByGender(Gender gender, Pageable pageable);
+
 }

@@ -140,4 +140,16 @@ public class StudentController {
         PageImpl<StudentDTO> result = studentService.findAllByNameAndAge(studentDTO.getName(), studentDTO.getAge(), page, size);
         return ResponseEntity.ok().body(result);
     }
+
+    @PostMapping("/pagination/level")
+    private ResponseEntity<PageImpl<StudentDTO>> findByLevel(@RequestParam("page") int page, @RequestParam("size") int size, @RequestBody StudentDTO studentDTO){
+        PageImpl<StudentDTO> result = studentService.findByLevel(studentDTO.getLevel(), page, size);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @PostMapping("/pagination/gender")
+    private ResponseEntity<PageImpl<StudentDTO>> findByGender(@RequestParam("page") int page, @RequestParam("size") int size, @RequestBody StudentDTO studentDTO){
+        PageImpl<StudentDTO> result = studentService.findByGender(studentDTO.getGender(), page, size);
+        return ResponseEntity.ok().body(result);
+    }
 }
