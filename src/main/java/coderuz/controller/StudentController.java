@@ -96,7 +96,7 @@ public class StudentController {
         return ResponseEntity.ok().body(result);
     }
 
-    @GetMapping("/getByDetail")
+    @PostMapping("/getByDetail")
     private ResponseEntity<List<StudentDTO>> findAllByDetail(@RequestBody StudentDTO studentDTO) {
         List<StudentDTO> result = studentService.findByAllByDetailPositionalNative(studentDTO);
         return ResponseEntity.ok().body(result);
@@ -129,9 +129,15 @@ public class StudentController {
         return ResponseEntity.ok().body(result);
     }
 
-    @GetMapping("/pagination/name")
+    @PostMapping("/pagination/name")
     private ResponseEntity<PageImpl<StudentDTO>> findByNameWithPagination(@RequestParam("page") int page, @RequestParam("size") int size, @RequestBody StudentDTO studentDTO){
         PageImpl<StudentDTO> result = studentService.findByNameWithPagination(studentDTO.getName(), page, size);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @PostMapping("/pagination/name&age")
+    private ResponseEntity<PageImpl<StudentDTO>> findAllByNameAndAge(@RequestParam("page") int page, @RequestParam("size") int size, @RequestBody StudentDTO studentDTO){
+        PageImpl<StudentDTO> result = studentService.findAllByNameAndAge(studentDTO.getName(), studentDTO.getAge(), page, size);
         return ResponseEntity.ok().body(result);
     }
 }

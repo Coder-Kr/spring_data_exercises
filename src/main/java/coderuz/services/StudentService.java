@@ -269,9 +269,6 @@ public class StudentService {
     }
 
     public PageImpl<StudentDTO> findByNameWithPagination(String name, int page, int size) {
-        System.out.println("name>>>>" + name);
-        System.out.println("page>>>>" + page);
-        System.out.println("size>>>>" + size);
         Sort sort = Sort.by("createdAt").descending();
         Pageable pageable = PageRequest.of(page, size, sort);
         Page<StudentEntity> result = studentRepository.findByName(name, pageable);
@@ -281,11 +278,24 @@ public class StudentService {
 
         List<StudentDTO> dtoList = new LinkedList<>();
         for(StudentEntity entity : entityList){
-            System.out.println("name Entity>>>>" + entity.getName());
             dtoList.add(toDTO(entity));
         }
 
         return  new PageImpl<StudentDTO>(dtoList, pageable, totalCount);
 
+    }
+
+    public PageImpl<StudentDTO> findAllByNameAndAge(String name, int age, int page, int size){
+        Sort sort = Sort.by("createdAt").descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<StudentEntity> result = studentRepository.findAllByNameAndAge(name, age, pageable);
+
+        long totalCount = result.getTotalElements();
+        List<StudentEntity> entityList = result.getContent();
+        List<StudentDTO> dtoList = new LinkedList<>();
+        for(StudentEntity entity : entityList){
+            dtoList.add(toDTO(entity));
+        }
+        return  new PageImpl<StudentDTO>(dtoList, pageable, totalCount);
     }
 }
