@@ -4,6 +4,7 @@ import coderuz.dto.CourseDTO;
 import coderuz.entity.CourseEntity;
 import coderuz.services.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -73,6 +74,12 @@ public class CourseController {
     @GetMapping("/getByDates")
     private ResponseEntity<List<CourseDTO>> findByCreatedAtDates(@RequestParam("fromDate") LocalDate createdAt1, @RequestParam("toDate") LocalDate createdAt2){
         List<CourseDTO> result = courseService.getByCreatedAtDates(createdAt1, createdAt2);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping("/pagination/{price}")
+    private ResponseEntity<PageImpl<CourseDTO>> findByPrice(@PathVariable Double price, @RequestParam("page")  int page, @RequestParam("size") int size){
+        PageImpl<CourseDTO> result = courseService.findByPrice(price, page, size);
         return ResponseEntity.ok().body(result);
     }
 }

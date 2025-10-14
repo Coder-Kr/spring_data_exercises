@@ -5,7 +5,10 @@ import coderuz.dto.StudentDTO;
 import coderuz.entity.CourseEntity;
 import coderuz.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -149,5 +152,21 @@ public class CourseService {
             list.add(toDTO(entity));
         }
         return list;
+    }
+
+
+    //========Pagination========
+    public PageImpl<CourseDTO> findByPrice(Double price, int page, int size) {
+        Sort sort = Sort.by("createdAt").descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<CourseEntity> result = courseRepository.findByPrice(price, pageable);
+
+        long total = result.getTotalElements();
+        List<CourseDTO> list = new LinkedList<>();
+        List<CourseEntity> content = result.getContent();
+        for(CourseEntity entity : content) {
+            list.add(toDTO(entity));
+        }
+        return new PageImpl<CourseDTO>(list, pageable, total);
     }
 }

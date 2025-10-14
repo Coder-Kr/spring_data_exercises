@@ -2,11 +2,13 @@ package coderuz.repository;
 
 import coderuz.entity.CourseEntity;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import org.springframework.data.domain.Page;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -46,6 +48,14 @@ public interface CourseRepository extends CrudRepository<CourseEntity, Integer> 
 
     @Query("from CourseEntity where createdAt between :fromDate and :toDate")
     List<CourseEntity> findByDates(@Param("fromDate") String fromDate, @Param("toDate") String toDate);
+
+
+    //========Pagination========
+    Page<CourseEntity> findAll(Pageable pageable);
+
+    Page<CourseEntity> findByPrice(Double price, Pageable pageable);
+
+    Page<CourseEntity> findByPriceBetween(Double priceFrom, Double priceTo, Pageable pageable);
 
 
 }
