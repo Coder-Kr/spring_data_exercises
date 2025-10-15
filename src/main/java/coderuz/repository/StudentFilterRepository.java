@@ -9,6 +9,8 @@ import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,12 +30,12 @@ public class StudentFilterRepository {
             paramsMap.put("id", filter.getId());
         }
         if (filter.getName() != null) {
-            query.append(" and s.name like :name");
-            paramsMap.put("name", "%" + filter.getName().toLowerCase() + "%");
+            query.append(" and s.name ilike :name");
+            paramsMap.put("name", "%" + filter.getName() + "%");
         }
         if (filter.getSurname() != null) {
-            query.append(" and s.surname like :surname");
-            paramsMap.put("surname", "%" + filter.getSurname().toLowerCase() + "%");
+            query.append(" and s.surname ilike :surname");
+            paramsMap.put("surname", "%" + filter.getSurname() + "%");
         }
         if (filter.getAge() != null) {
             query.append(" and s.age = :age");
@@ -43,9 +45,16 @@ public class StudentFilterRepository {
             query.append(" and s.gender = :gender");
             paramsMap.put("gender", filter.getGender());
         }
+        if(filter.getLevel() != null){
+            query.append(" and s.level = :level");
+            paramsMap.put("level", filter.getLevel());
+        }
         if (filter.getCreatedAt() != null) {
-            query.append(" and s.createdAt = :createdAt");
-            paramsMap.put("createdAt", filter.getCreatedAt());
+            query.append(" and s.createdAt >= :createdAtFrom and s.createdAt <= :createdAtTo");
+            var from = LocalDateTime.of(filter.getCreatedAt(), LocalTime.MIN);
+            var to = LocalDateTime.of(filter.getCreatedAt(), LocalTime.MAX);
+            paramsMap.put("createdAtFrom", from);
+            paramsMap.put("createdAtTo", to);
         }
 
         StringBuilder selectBuilder = new StringBuilder("select s from StudentEntity s");
@@ -75,6 +84,7 @@ public class StudentFilterRepository {
     }
 
     public FilterResultDTO<StudentEntity> filterNative(StudentDTO filter, int page, int size) {
+        System.out.println("filterNative>>>>>" +filter.getName());
         StringBuilder query = new StringBuilder(" where s.age>10");
         Map<String, Object> paramsMap = new HashMap<>();
 
@@ -83,12 +93,12 @@ public class StudentFilterRepository {
             paramsMap.put("id", filter.getId());
         }
         if (filter.getName() != null) {
-            query.append(" and s.name like :name");
-            paramsMap.put("name", "%" + filter.getName().toLowerCase() + "%");
+            query.append(" and s.name ilike :name");
+            paramsMap.put("name", "%" + filter.getName() + "%");
         }
         if (filter.getSurname() != null) {
-            query.append(" and s.surname like :surname");
-            paramsMap.put("surname", "%" + filter.getSurname().toLowerCase() + "%");
+            query.append(" and s.surname ilike :surname");
+            paramsMap.put("surname", "%" + filter.getSurname() + "%");
         }
         if (filter.getAge() != null) {
             query.append(" and s.age = :age");
@@ -97,6 +107,10 @@ public class StudentFilterRepository {
         if (filter.getGender() != null) {
             query.append(" and s.gender = :gender");
             paramsMap.put("gender", filter.getGender().name());
+        }
+        if(filter.getLevel() != null){
+            query.append(" and s.level = :level");
+            paramsMap.put("level", filter.getLevel());
         }
         if (filter.getCreatedAt() != null) {
             query.append(" and s.created_at = :createdAt");
@@ -122,6 +136,7 @@ public class StudentFilterRepository {
         selectQuery.setMaxResults(size); //$limit
 
         List<StudentEntity> content = selectQuery.getResultList();
+        System.out.println("content>>>>>"+content);
         Query countQuery = entityManager.createNativeQuery(countBuilder.toString());
         paramsMap.forEach(countQuery::setParameter);
         Long totalCount = (Long) countQuery.getSingleResult();

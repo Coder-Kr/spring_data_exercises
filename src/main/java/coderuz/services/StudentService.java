@@ -32,7 +32,7 @@ public class StudentService {
 
         studentRepository.save(studentEntity);
         studentDTO.setId(studentEntity.getId());
-        studentDTO.setCreatedAt(studentEntity.getCreatedAt());
+        studentDTO.setCreatedAt(studentEntity.getCreatedAt().toLocalDate());
 
         return studentDTO;
     }
@@ -56,7 +56,7 @@ public class StudentService {
         studentDTO.setAge(studentEntity.getAge());
         studentDTO.setGender(studentEntity.getGender());
         studentDTO.setLevel(studentEntity.getLevel());
-        studentDTO.setCreatedAt(studentEntity.getCreatedAt());
+        studentDTO.setCreatedAt(studentEntity.getCreatedAt().toLocalDate());
         return studentDTO;
     }
 
@@ -336,7 +336,7 @@ public class StudentService {
     //=========Pagination==========//
 
     public PageImpl<StudentDTO> filter(StudentDTO filter, int page, int size){
-        FilterResultDTO<StudentEntity> result = studentFilterRepository.filterNative(filter, page, size);
+        FilterResultDTO<StudentEntity> result = studentFilterRepository.filter(filter, page, size);
         List<StudentDTO> dtoList = new LinkedList<>();
         for(StudentEntity entity : result.getContent()){
             dtoList.add(toDTO(entity));

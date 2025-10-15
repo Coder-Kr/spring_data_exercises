@@ -5,11 +5,14 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class StudentDTO {
     private Integer id;
@@ -33,5 +36,5 @@ public class StudentDTO {
 
     @NotNull(message = "Gender is required")
     private Gender gender;
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 }
