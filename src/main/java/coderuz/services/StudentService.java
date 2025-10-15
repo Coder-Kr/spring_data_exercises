@@ -336,7 +336,7 @@ public class StudentService {
     //=========Pagination==========//
 
     public PageImpl<StudentDTO> filter(StudentDTO filter, int page, int size){
-        FilterResultDTO<StudentEntity> result = studentFilterRepository.filter(filter, page, size);
+        FilterResultDTO<StudentEntity> result = studentFilterRepository.filterNative(filter, page, size);
         List<StudentDTO> dtoList = new LinkedList<>();
         for(StudentEntity entity : result.getContent()){
             dtoList.add(toDTO(entity));
