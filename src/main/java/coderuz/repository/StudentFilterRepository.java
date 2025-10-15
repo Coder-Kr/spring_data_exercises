@@ -1,13 +1,11 @@
 package coderuz.repository;
-
 import coderuz.dto.FilterResultDTO;
 import coderuz.dto.StudentDTO;
 import coderuz.entity.StudentEntity;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -52,7 +50,7 @@ public class StudentFilterRepository {
         selectBuilder.append(query);
         selectBuilder.append(" order by s.createdAt desc");
 
-        StringBuilder countBuilder = new StringBuilder("select count(*) from StudentEntity s");
+        StringBuilder countBuilder = new StringBuilder("select count(s) from StudentEntity s");
         countBuilder.append(query);
 
         Query selectQuery = entityManager.createQuery(selectBuilder.toString(), StudentEntity.class);
@@ -63,14 +61,13 @@ public class StudentFilterRepository {
         //yuqoridagi for() bilan bir xil logic
         //paramsMap.forEach(selectQuery::setParameter);
 
-        selectQuery.setFirstResult(page * size);//offset $skip
+        selectQuery.setFirstResult(page * size); //offset $skip
         selectQuery.setMaxResults(size); //$limit
 
         List<StudentEntity> content = selectQuery.getResultList();
         Query countQuery = entityManager.createQuery(countBuilder.toString());
         paramsMap.forEach(countQuery::setParameter);
         Long totalCount = (Long) countQuery.getSingleResult();
-
 
         return new FilterResultDTO<StudentEntity>(content, totalCount);
     }
