@@ -4,6 +4,7 @@ import coderuz.enums.Gender;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @Entity //db da automatic table hosil qiladi
 @Getter
 @Setter
+@ToString
 @Table(name="student")
 public class StudentEntity {
     @Id //primary key

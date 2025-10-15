@@ -1,5 +1,6 @@
 package coderuz.repository;
 
+import coderuz.dto.StudentDTO;
 import coderuz.dto.StudentNameSurnameDTO;
 import coderuz.entity.StudentCourseEntity;
 import coderuz.entity.StudentEntity;
@@ -124,8 +125,8 @@ public interface StudentRepository extends CrudRepository<StudentEntity, Integer
     @Query("select s.id as id, s.name as name, s.surname as surname from StudentEntity s")
     List<StudentInfoMapper> getStudentInfo();
 
-    //=========Pagination==========//
 
+    //=========Pagination==========//
     Page<StudentEntity> findByName(String name, Pageable pageable); //with name query generation
 
     @Query("select s from StudentEntity s where s.name=?1 and s.age=?2")
@@ -134,5 +135,6 @@ public interface StudentRepository extends CrudRepository<StudentEntity, Integer
     Page<StudentEntity> findByLevel(int level, Pageable pageable);
 
     Page<StudentEntity> findByGender(Gender gender, Pageable pageable);
+
 
 }

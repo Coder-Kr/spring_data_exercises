@@ -1,10 +1,12 @@
 package coderuz.services;
 
+import coderuz.dto.FilterResultDTO;
 import coderuz.dto.PageResponse;
 import coderuz.dto.StudentDTO;
 import coderuz.entity.StudentEntity;
 import coderuz.enums.Gender;
 import coderuz.mapper.StudentInfoMapper;
+import coderuz.repository.StudentFilterRepository;
 import coderuz.repository.StudentRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,8 @@ import java.util.Optional;
 public class StudentService {
     @Autowired
     private StudentRepository studentRepository;
+    @Autowired
+    private StudentFilterRepository studentFilterRepository;
 
     public StudentDTO create(StudentDTO studentDTO) {
         StudentEntity studentEntity = toEntity(studentDTO);
@@ -327,5 +331,16 @@ public class StudentService {
         }
 
         return new PageImpl<StudentDTO>(dtoList, pageable, totalCount);
+    }
+
+    //=========Pagination==========//
+
+    public PageImpl<StudentDTO> filter(StudentDTO filter, int page, int size){
+        FilterResultDTO<StudentEntity> result = studentFilterRepository.filter(filter, page, size);
+        List<StudentDTO> dtoList = new LinkedList<>();
+        for(StudentEntity entity : result.getContent()){
+            dtoList.add(toDTO(entity));
+        }
+        return new PageImpl<>(dtoList, PageRequest.of(page, size), result.getTotalElements());
     }
 }

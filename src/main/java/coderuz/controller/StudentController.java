@@ -152,4 +152,10 @@ public class StudentController {
         PageImpl<StudentDTO> result = studentService.findByGender(studentDTO.getGender(), page, size);
         return ResponseEntity.ok().body(result);
     }
+
+    @PostMapping("/filter")
+    private ResponseEntity<PageImpl<StudentDTO>> filter(@RequestParam("page") int page, @RequestParam("size") int size, @RequestBody StudentDTO filter) {
+        PageImpl<StudentDTO> result = studentService.filter(filter, page, size);
+        return ResponseEntity.ok().body(result);
+    }
 }
