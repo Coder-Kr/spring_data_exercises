@@ -30,7 +30,8 @@ public class StudentService {
     public StudentDTO create(StudentDTO studentDTO) {
         StudentEntity studentEntity = toEntity(studentDTO);
 
-        studentRepository.save(studentEntity);
+        StudentEntity student = studentRepository.save(studentEntity);
+        System.out.println("student>>>>" + student);
         studentDTO.setId(studentEntity.getId());
         studentDTO.setCreatedAt(studentEntity.getCreatedAt().toLocalDate());
 
