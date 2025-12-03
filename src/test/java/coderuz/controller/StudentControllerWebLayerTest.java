@@ -11,13 +11,16 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import com.fasterxml.jackson.core.type.TypeReference;
 
+import java.util.List;
 import java.util.UUID;
 
 @WebMvcTest(controllers = StudentController.class)
@@ -34,41 +37,125 @@ public class StudentControllerWebLayerTest {
     void testCreateUser_whenUserDetailsProvided_returnCreateUserDetails() throws Exception {
 
         //Arrange
+        StudentDTO requestDTO = createStudentDTO();
+
+        StudentDTO responseDTO = createStudentDTO();
+        responseDTO.setId(1);
+
+        Mockito.when(studentService.create(Mockito.any(StudentDTO.class))).thenReturn(responseDTO);
+
+        RequestBuilder  requestBuilder = MockMvcRequestBuilders.post("/student/create")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(requestDTO));
+
+        //Act
+        MvcResult mvcResult = mockMvc.perform(requestBuilder).andReturn();
+        String responseBodyAsString = mvcResult.getResponse().getContentAsString();
+        StudentDTO storedStudent = new ObjectMapper().readValue(responseBodyAsString, StudentDTO.class);
+
+        //Assertion
+        Assertions.assertEquals(requestDTO.getName(), storedStudent.getName(), "Student name is incorrect.");
+        Assertions.assertEquals(requestDTO.getSurname(), storedStudent.getSurname(), "Surname is incorrect.");
+        Assertions.assertEquals(requestDTO.getLevel(), storedStudent.getLevel(), "Level is incorrect.");
+        Assertions.assertEquals(requestDTO.getAge(), storedStudent.getAge(), "Age is incorrect.");
+        Assertions.assertEquals(requestDTO.getGender(), storedStudent.getGender(), "Gender is incorrect.");
+        Assertions.assertNotNull(storedStudent.getId(), "ID is incorrect.");
+    }
+
+    @Test
+    @DisplayName("Get all users")
+    void testGetAllUsers_whenUsersDetailsProvided_returnAllUsers() throws Exception {
+        //Arrange
+        StudentDTO student1 = createStudentDTO();
+        StudentDTO student2 = createStudentDTO();
+        StudentDTO student3 = createStudentDTO();
+
+        List<StudentDTO> students = List.of(student1, student2, student3);
+        Mockito.when(studentService.findAll()).thenReturn(students);
+
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/student/all")
+                .accept(MediaType.APPLICATION_JSON);
+
+        //Act
+        MvcResult mvcResult = mockMvc.perform(requestBuilder).andReturn();
+        String responseBodyAsString = mvcResult.getResponse().getContentAsString();
+        List<StudentDTO> storedStudents = new ObjectMapper().readValue(responseBodyAsString, new TypeReference<List<StudentDTO>>() {});
+
+        //Assertion
+        Assertions.assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus(), "Status code should be 200");
+        Assertions.assertEquals(3, storedStudents.size(), "Number of students should be correct.");
+        Assertions.assertEquals(student1.getName(), storedStudents.get(0).getName(), "Student name is incorrect.");
+        Assertions.assertEquals(MediaType.APPLICATION_JSON_VALUE, mvcResult.getResponse().getContentType(), "Content-Type should be application/json.");
+        Mockito.verify(studentService, Mockito.times(1)).findAll();
+
+    }
+
+    @Test
+    @DisplayName("Get Student by Id")
+    void testGetStudentById_whenStudentIdProvided_returnStudentDetails() throws Exception {
+        //Arrange
+        StudentDTO student1 = createStudentDTO();
+        student1.setId(1);
+
+        Mockito.when(studentService.getById(Mockito.eq(1))).thenReturn(student1);
+
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/student/byId/{id}", 1)
+                .accept(MediaType.APPLICATION_JSON);
+
+        //Act
+        MvcResult mvcResult = mockMvc.perform(requestBuilder).andReturn();
+        String responseBodyAsString = mvcResult.getResponse().getContentAsString();
+        StudentDTO storedStudent = new ObjectMapper().readValue(responseBodyAsString, StudentDTO.class);
+
+        //Assertion
+        Assertions.assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus(), "Status code should be 200");
+        Assertions.assertEquals(1, storedStudent.getId(), "ID is incorrect.");
+        Assertions.assertEquals(student1.getName(), storedStudent.getName(), "Student name is incorrect.");
+        Assertions.assertEquals(MediaType.APPLICATION_JSON_VALUE, mvcResult.getResponse().getContentType(), "Content-Type should be application/json.");
+        Mockito.verify(studentService, Mockito.times(1)).getById(Mockito.eq(1));
+
+    }
+
+    @Test
+    @DisplayName("Student update by id")
+    void testUpdateStudentById_whenStudentDetailsProvided_returnUpdateStudentDetails() throws Exception {
+        //Arrange
+        StudentDTO studentRequest = createStudentDTO();
+        studentRequest.setId(1);
+
+        StudentDTO studentResponse = createStudentDTO();
+        studentResponse.setName("Abdulloh");
+        studentResponse.setId(1);
+
+        Mockito.when(studentService.updateById(Mockito.eq(1), Mockito.any(StudentDTO.class))).thenReturn(studentResponse);
+
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/student/update/{id}", 1)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(studentRequest));
+
+        //Act
+        MvcResult mvcResult = mockMvc.perform(requestBuilder).andReturn();
+        String responseBodyAsString = mvcResult.getResponse().getContentAsString();
+        StudentDTO updatedStudent = new ObjectMapper().readValue(responseBodyAsString, StudentDTO.class);
+
+        //Assertion
+        Mockito.verify(studentService, Mockito.times(1)).updateById(Mockito.eq(1), Mockito.any(StudentDTO.class));
+        Assertions.assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus(), "Status code should be 200");
+        Assertions.assertNotEquals(studentRequest.getName(), updatedStudent.getName(), "Student name did not changed.");
+        Assertions.assertEquals(studentResponse.getName(), updatedStudent.getName(), "Student name is incorrect.");
+
+    }
+
+    private StudentDTO createStudentDTO() {
         StudentDTO studentDTO = new StudentDTO();
         studentDTO.setName("Jasurbek");
         studentDTO.setSurname("Odilov");
         studentDTO.setLevel(2);
         studentDTO.setAge(28);
         studentDTO.setGender(Gender.MALE);
-
-        StudentDTO studentDTOResponse = new StudentDTO();
-        studentDTOResponse.setName("Jasurbek");
-        studentDTOResponse.setSurname("Odilov");
-        studentDTOResponse.setLevel(2);
-        studentDTOResponse.setAge(28);
-        studentDTOResponse.setGender(Gender.MALE);
-        studentDTOResponse.setId(1);
-
-        Mockito.when(studentService.create(Mockito.any(StudentDTO.class))).thenReturn(studentDTOResponse);
-
-        RequestBuilder  requestBuilder = MockMvcRequestBuilders.post("/student/create")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(studentDTO));
-
-        //Act
-        MvcResult mvcResult = mockMvc.perform(requestBuilder).andReturn();
-        String responseBodyAsString = mvcResult.getResponse().getContentAsString();
-        StudentDTO responseDTO = new ObjectMapper().readValue(responseBodyAsString, StudentDTO.class);
-
-        //Assertion
-        Assertions.assertEquals(studentDTO.getName(), responseDTO.getName(), "Student name is incorrect.");
-        Assertions.assertEquals(studentDTO.getSurname(), responseDTO.getSurname(), "Surname is incorrect.");
-        Assertions.assertEquals(studentDTO.getLevel(), responseDTO.getLevel(), "Level is incorrect.");
-        Assertions.assertEquals(studentDTO.getAge(), responseDTO.getAge(), "Age is incorrect.");
-        Assertions.assertEquals(studentDTO.getGender(), responseDTO.getGender(), "Gender is incorrect.");
-        Assertions.assertNotNull(responseDTO.getId(), "ID is incorrect.");
+        return studentDTO;
     }
-
 
 }
