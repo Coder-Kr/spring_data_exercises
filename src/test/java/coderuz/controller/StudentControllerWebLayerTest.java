@@ -148,6 +148,51 @@ public class StudentControllerWebLayerTest {
 
     }
 
+    @Test
+    @DisplayName("Delete by id")
+    void testDeleteStudentById_whenStudentIdProvided_returnDeleteMessage() throws Exception {
+        //Arrange
+        String response = "Deleted";
+        Mockito.when(studentService.deleteById(Mockito.eq(1))).thenReturn(response);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/student/delete/{id}", 1);
+
+        //Act
+        MvcResult mvcResult = mockMvc.perform(requestBuilder).andReturn();
+
+
+        //Assertion
+        Assertions.assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus(), "Status code should be 200");
+        Mockito.verify(studentService, Mockito.times(1)).deleteById(Mockito.eq(1));
+    }
+
+    @Test
+    @DisplayName("Student find by Name")
+    void testFindStudentsByName_whenStudentNameProvided_returnStudentDetailsList() throws Exception {
+        //Arrange
+        String name = "Jasurbek";
+        StudentDTO student1 = createStudentDTO();
+        student1.setId(1);
+        StudentDTO student2 = createStudentDTO();
+        student2.setId(2);
+        List<StudentDTO> studentList = List.of(student1, student2);
+        Mockito.when(studentService.findAllByName(Mockito.eq(name))).thenReturn(studentList);
+
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/student/findByName")
+                .param("name", name)
+                .accept(MediaType.APPLICATION_JSON);
+
+        //Act
+        MvcResult mvcResult = mockMvc.perform(requestBuilder).andReturn();
+        String responseBodyAsString = mvcResult.getResponse().getContentAsString();
+        List<StudentDTO> listOfStudents = new ObjectMapper().readValue(responseBodyAsString, new TypeReference<List<StudentDTO>>() {});
+
+        //Assertion
+        Assertions.assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus(), "Status code should be 200");
+        Assertions.assertEquals(2, listOfStudents.size(), "should return 2 students");
+        Assertions.assertEquals(student1.getName(), listOfStudents.get(0).getName(), "Student name is incorrect.");
+        Mockito.verify(studentService, Mockito.times(1)).findAllByName(Mockito.eq(name));
+    }
+
     private StudentDTO createStudentDTO() {
         StudentDTO studentDTO = new StudentDTO();
         studentDTO.setName("Jasurbek");
