@@ -54,7 +54,11 @@ public interface StudentRepository extends CrudRepository<StudentEntity, Integer
     List<StudentEntity> findAllByGender(@Param("genderParam") Gender gender);
 
     @Query("from StudentEntity where name=:nameParam and surname=:surnameParam and age=:ageParam")
-    List<StudentEntity> findAllByDetail(@Param("nameParam") String name, @Param("surnameParam") String surname, @Param("ageParam") Integer age);
+    List<StudentEntity> findAllByDetail(
+            @Param("nameParam") String name,
+            @Param("surnameParam") String surname,
+            @Param("ageParam") Integer age
+    );
 
     @Query("from StudentEntity where name=?1 and surname=?2 and age=?3")
     List<StudentEntity> findByAllByDetailPositional(String name, String surname, Integer age);
@@ -83,7 +87,13 @@ public interface StudentRepository extends CrudRepository<StudentEntity, Integer
     @Modifying
     @Transactional
     @Query("insert into StudentEntity(name, surname, gender, age, level) values(:name, :surname, :gender, :age, :level)")
-    StudentEntity createByQuery(@Param("name") String name, @Param("surname") String surname, @Param("gender") Gender gender, @Param("age") Integer age, @Param("level") Integer level);
+    StudentEntity createByQuery(
+            @Param("name") String name,
+            @Param("surname") String surname,
+            @Param("gender") Gender gender,
+            @Param("age") Integer age,
+            @Param("level") Integer level
+    );
 
     @Query("from StudentEntity ")
     List<StudentEntity> findAllByQuery();
@@ -93,8 +103,20 @@ public interface StudentRepository extends CrudRepository<StudentEntity, Integer
 
 
     @Modifying
-    @Query("update StudentEntity set name=:name, surname=:surname, level=:level, age=:age, gender=:gender where id=:id")
-    void updateStudentById(@Param("name") String name, @Param("surname") String surname, @Param("level") Integer level, @Param("age") Integer age, @Param("gender") Gender gender, @Param("id") Integer id);
+    @Query("update StudentEntity set " +
+            "name=:name, " +
+            "surname=:surname, " +
+            "level=:level, " +
+            "age=:age, " +
+            "gender=:gender " +
+            "where id=:id")
+    int updateStudentById(
+            @Param("name") String name,
+            @Param("surname") String surname,
+            @Param("level") Integer level,
+            @Param("age") Integer age,
+            @Param("gender") Gender gender,
+            @Param("id") Integer id);
 
     @Modifying
     @Query("delete StudentEntity where id=:idParam")
@@ -107,7 +129,10 @@ public interface StudentRepository extends CrudRepository<StudentEntity, Integer
     Optional<StudentEntity> findBySurnameQ(@Param("surnameParam") String surnameParam);
 
     @Query("from StudentEntity where createdAt between :fromDate and :toDate")
-    List<StudentEntity> findByDate(@Param("fromDate") LocalDateTime fromDate,  @Param("toDate") LocalDateTime toDate);
+    List<StudentEntity> findByDate(
+            @Param("fromDate") LocalDateTime fromDate,
+            @Param("toDate") LocalDateTime toDate
+    );
 
     //=========Partial select==========//
     @Query("Select s.name, s.surname from StudentEntity s")

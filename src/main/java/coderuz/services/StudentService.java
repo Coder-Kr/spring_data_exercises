@@ -80,20 +80,23 @@ public class StudentService {
 
     @Transactional
     public StudentDTO updateById(Integer id, StudentDTO studentDTO) {
-        Optional<StudentEntity> optional = studentRepository.findById(id);
-        if (optional.isEmpty()) {
+        int updatedRows = studentRepository.updateStudentById(
+                studentDTO.getName(),
+                studentDTO.getSurname(),
+                studentDTO.getLevel(),
+                studentDTO.getAge(),
+                studentDTO.getGender(),
+                id
+        );
+
+        if(updatedRows == 0){
             throw new IllegalArgumentException("Student with id " + id + " not found");
         }
-        StudentEntity entity = optional.get();
-        entity.setName(studentDTO.getName());
-        entity.setSurname(studentDTO.getSurname());
-        entity.setAge(studentDTO.getAge());
-        entity.setGender(studentDTO.getGender());
-        entity.setLevel(studentDTO.getLevel());
-        studentRepository.updateStudentById(studentDTO.getName(), studentDTO.getSurname(), studentDTO.getLevel(), studentDTO.getAge(), studentDTO.getGender(), id);
 
-        studentDTO.setId(id);
-        return studentDTO;
+        StudentEntity updatedEntity = studentRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Student with id " + id + " not found"));
+
+        return toDTO(updatedEntity);
 
 //        int result = studentRepository.updateNameAndSurname(studentDTO.getName(), studentDTO.getSurname(), id);
 //        if(result == 0){
